@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
-class user_info(models.Model):
+class User_info(models.Model):
     firstname = models.CharField(max_length=45)
     lastname = models.CharField(max_length=45)
     email = models.EmailField()
@@ -22,8 +22,8 @@ class user_info(models.Model):
         verbose_name_plural = 'user_info'
 
 
-class user_wish_list(models.Model):
-    user_id = models.ForeignKey(user_info, on_delete=models.CASCADE)
+class User_wish_list(models.Model):
+    user_id = models.ForeignKey(User_info, on_delete=models.CASCADE)
     product_id = models.CharField(max_length=100)
 
     def __str__(self):
@@ -35,8 +35,8 @@ class user_wish_list(models.Model):
 
 
 
-class user_address(models.Model):
-    user_id = models.ForeignKey(user_info, on_delete=models.CASCADE)
+class User_address(models.Model):
+    user_id = models.ForeignKey(User_info, on_delete=models.CASCADE)
     address1 = models.CharField(max_length=100)
     address2 = models.CharField(max_length=100)
     city = models.CharField(max_length=45)
@@ -53,7 +53,7 @@ class user_address(models.Model):
 
 
 
-class coupon(models.Model):
+class Coupon(models.Model):
     code = models.CharField(max_length=45)
     percent_off = models.FloatField()
     created_by = models.IntegerField()
@@ -71,11 +71,11 @@ class coupon(models.Model):
 
 
 
-class coupons_used(models.Model):
+class Coupons_used(models.Model):
     user_id = models.IntegerField()
     order_id = models.IntegerField()
     created_date = models.DateField()
-    coupon_id = models.ForeignKey(coupon, on_delete=models.CASCADE)
+    coupon_id = models.ForeignKey(Coupon, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -86,7 +86,7 @@ class coupons_used(models.Model):
 
 
 
-class cms(models.Model):
+class Cms(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     meta_title = models.TextField()
@@ -106,7 +106,7 @@ class cms(models.Model):
 
 
 
-class configuration(models.Model):
+class Configuration(models.Model):
     conf_key = models.CharField(max_length=45)
     conf_value = models.CharField(max_length=100)
     created_by = models.IntegerField()
@@ -124,11 +124,11 @@ class configuration(models.Model):
 
 
 
-class coupons_used(models.Model):
+class Coupons_used(models.Model):
     user_id = models.IntegerField()
     order_id = models.IntegerField()
     created_date = models.DateField()
-    coupon_id = models.ForeignKey(coupon, on_delete=models.CASCADE)
+    coupon_id = models.ForeignKey(Coupon, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -139,7 +139,7 @@ class coupons_used(models.Model):
 
 
 
-class contact_us(models.Model):
+class Contact_us(models.Model):
     name = models.CharField(max_length=45)
     email = models.EmailField(max_length=45)
     contact_no = models.CharField(max_length=45)
@@ -159,7 +159,7 @@ class contact_us(models.Model):
 
 
 
-class banners(models.Model):
+class Banners(models.Model):
     banner_path = models.CharField(max_length=255)
     status = models.BooleanField(default=False)
     images = models.ImageField()
@@ -173,7 +173,7 @@ class banners(models.Model):
 
 
 
-class email_template(models.Model):
+class Email_template(models.Model):
     title = models.CharField(max_length=45)
     subject = models.CharField(max_length=255)
     content = models.TextField()
@@ -191,7 +191,7 @@ class email_template(models.Model):
 
 
 
-class category(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=100)
     parent_id = models.IntegerField()
     created_by = models.IntegerField()
@@ -209,7 +209,7 @@ class category(models.Model):
 
 
 
-class product(models.Model):
+class Product(models.Model):
     name = models.CharField(max_length=100)
     sku = models.CharField(max_length=45)
     short_description = models.CharField(max_length=100)
@@ -239,9 +239,9 @@ class product(models.Model):
 
 
 
-class product_category(models.Model):
-    product_id = models.ForeignKey(product, on_delete=models.CASCADE)
-    category_id = models.ForeignKey(category, on_delete=models.CASCADE)
+class Product_category(models.Model):
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -252,14 +252,14 @@ class product_category(models.Model):
 
 
 
-class product_images(models.Model):
+class Product_images(models.Model):
     image_name = models.CharField(max_length=100)
     status = models.BooleanField(default=False)
     created_by = models.IntegerField()
     created_date = models.DateField()
     modify_by = models.IntegerField()
     modify_date = models.DateField()
-    product_id = models.ForeignKey(product, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     product_image = models.ImageField()
 
     def __str__(self):
@@ -271,9 +271,9 @@ class product_images(models.Model):
 
 
 
-class order_details(models.Model):
+class Order_details(models.Model):
     order_id = models.IntegerField()
-    product_id = models.ForeignKey(product, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     amount = models.FloatField()
 
@@ -286,7 +286,7 @@ class order_details(models.Model):
 
 
 
-class payment_gateway(models.Model):
+class Payment_gateway(models.Model):
     name = models.CharField(max_length=45)
     created_by = models.IntegerField()
     created_date = models.DateField()
@@ -302,17 +302,17 @@ class payment_gateway(models.Model):
 
 
 
-class user_order(models.Model):
-    user_id = models.ForeignKey(user_info, on_delete=models.CASCADE)
+class User_order(models.Model):
+    user_id = models.ForeignKey(User_info, on_delete=models.CASCADE)
     shipping_method = models.IntegerField()
     AWB_No = models.CharField(max_length=100)
-    payment_gateway_id = models.ForeignKey(payment_gateway, on_delete=models.CASCADE)
+    payment_gateway_id = models.ForeignKey(Payment_gateway, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100)
     created_date = models.DateField()
     status = models.IntegerField()
     grand_total = models.FloatField()
     shipping_charges = models.FloatField()
-    coupon_id = models.ForeignKey(coupon, on_delete=models.CASCADE)
+    coupon_id = models.ForeignKey(Coupon, on_delete=models.CASCADE)
     billing_address1 = models.CharField(max_length=100)
     billing_address2 = models.CharField(max_length=100)
     billing_city = models.CharField(max_length=45)
@@ -335,7 +335,7 @@ class user_order(models.Model):
 
 
 
-class product_attributes(models.Model):
+class Product_attributes(models.Model):
     name = models.CharField(max_length=45)
     created_by = models.IntegerField()
     created_date = models.DateField()
@@ -351,8 +351,8 @@ class product_attributes(models.Model):
 
 
 
-class product_attribute_value(models.Model):
-    product_attribute = models.ForeignKey(product_attributes, on_delete=models.CASCADE)
+class Product_attribute_value(models.Model):
+    product_attribute = models.ForeignKey(Product_attributes, on_delete=models.CASCADE)
     attribute_value = models.CharField(max_length=45)
     created_by = models.IntegerField()
     created_date = models.DateField()
@@ -368,9 +368,9 @@ class product_attribute_value(models.Model):
 
 
 
-class product_attribute_assoc(models.Model):
-    product_id = models.ForeignKey(product, on_delete=models.CASCADE)
-    product_attribute_id = models.ForeignKey(product_attributes, on_delete=models.CASCADE)
+class Product_attribute_assoc(models.Model):
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product_attribute_id = models.ForeignKey(Product_attributes, on_delete=models.CASCADE)
     product_attribute_value_id = models.IntegerField()
 
     def __str__(self):
@@ -384,8 +384,17 @@ class product_attribute_assoc(models.Model):
 class User(AbstractUser):
     is_admin = models.BooleanField('Is admin',default=False)
     is_customer = models.BooleanField('Is customer', default=False)
-    is_employee = models.BooleanField('Is employee', default=False)
+    is_order = models.BooleanField('Is order', default=False)
 
+
+class Manage_user(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField(max_length=100)
+    address = models.TextField()
+    phone = models.IntegerField()
+
+    def __str__(self):
+        return self.name
 
 
 

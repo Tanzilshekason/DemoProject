@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, LoginForm
 from django.contrib.auth import authenticate, login
+from app.models import Manage_user
 
 
 def index(request):
@@ -30,18 +31,92 @@ def login_view(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
-            if user is not None:
+            if user is not None and user.is_admin:
                 login(request, user)
-                return redirect('home')
+                return redirect('adminpage')
+            elif user is not None and user.is_customer:
+                login(request, user)
+                return redirect('customer')
+            elif user is not None and user.is_order:
+                login(request, user)
+                return redirect('order')
+
+
             else:
                 msg = 'invalid credentials'
         else:
             msg = 'error validating form'
     return render(request, 'login.html', {'form':form, 'msg':msg})
 
-def home(request):
-    return render(request, 'homepage.html')
+def admin(request):
+    return render(request, 'admin.html')
+
+def customer(request):
+    return render(request, 'customer.html')
+
+def order(request):
+    return render(request, 'order.html')
+
+def INDEX(request):
+    emp = Manage_user.objects.all()
+
+    context = {
+        'emp':emp,
+    }
+    return render(request, 'crud.html',context)
+
+def ADD(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        phone = request.POST.get('phone')
+
+        emp = Manage_user(
+            name=name,
+            email=email,
+            address=address,
+            phone=phone
+        )
+        emp.save()
+        return redirect('home')
+
+    return render(request,'crud.html',)
+
+def Edit(request):
+    emp = Manage_user.objects.all()
+
+    context = {
+        'emp':emp,
+    }
+
+    return redirect(request,'crud.html',context)
 
 
+def UPDATE(request,id):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        phone = request.POST.get('phone')
 
+        emp = Manage_user(
+            id=id,
+            name=name,
+            email=email,
+            address=address,
+            phone=phone,
+        )
+        emp.save()
+        return redirect('home')
 
+    return redirect(request,'crud.html')
+
+def Delete(request,id):
+    emp = Manage_user.objects.filter(id=id)
+    emp.delete()
+    context = {
+        'emp':emp,
+    }
+
+    return redirect('home')

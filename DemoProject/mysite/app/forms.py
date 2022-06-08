@@ -10,7 +10,6 @@ class LoginForm(forms.Form):
             }
         )
     )
-
     password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
@@ -28,7 +27,6 @@ class SignUpForm(UserCreationForm):
             }
         )
     )
-
     password1 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
@@ -36,7 +34,6 @@ class SignUpForm(UserCreationForm):
             }
         )
     )
-
     password2 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
@@ -44,7 +41,6 @@ class SignUpForm(UserCreationForm):
             }
         )
     )
-
     email = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -55,5 +51,5 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username','email','password1','password2','is_admin','is_customer','is_employee')
+        fields = ('username', 'email', 'password1', 'password2', 'is_admin', 'is_order', 'is_customer')
 
