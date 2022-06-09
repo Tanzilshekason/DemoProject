@@ -380,13 +380,13 @@ class Product_attribute_assoc(models.Model):
         verbose_name = 'product_attribute_assoc'
         verbose_name_plural = 'product_attribute_assoc'
 
-
+# Model for USER
 class User(AbstractUser):
     is_admin = models.BooleanField('Is admin',default=False)
     is_customer = models.BooleanField('Is customer', default=False)
     is_order = models.BooleanField('Is order', default=False)
 
-
+# Model for CRUD operations
 class Manage_user(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField(max_length=100)

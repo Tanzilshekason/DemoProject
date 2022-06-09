@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, LoginForm
 from django.contrib.auth import authenticate, login
-from app.models import Manage_user
+from adminpanel.models import Manage_user
 
 
 def index(request):
     return render(request, 'starter.html')
 
-
+# For Register and Login page
 def register(request):
     msg = None
     if request.method == 'POST':
@@ -48,6 +48,8 @@ def login_view(request):
             msg = 'error validating form'
     return render(request, 'login.html', {'form':form, 'msg':msg})
 
+
+# For admin,customer and order page.
 def admin(request):
     return render(request, 'admin.html')
 
@@ -57,6 +59,8 @@ def customer(request):
 def order(request):
     return render(request, 'order.html')
 
+
+# For CRUD Operations
 def INDEX(request):
     emp = Manage_user.objects.all()
 
