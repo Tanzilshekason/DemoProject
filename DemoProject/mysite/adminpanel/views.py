@@ -37,9 +37,10 @@ def login_view(request):
             elif user is not None and user.is_customer:
                 login(request, user)
                 return redirect('customer')
-            elif user is not None and user.is_order:
+
+            elif user is not None and user.is_manager:
                 login(request, user)
-                return redirect('order')
+                return redirect('manager')
 
 
             else:
@@ -56,8 +57,8 @@ def admin(request):
 def customer(request):
     return render(request, 'customer.html')
 
-def order(request):
-    return render(request, 'order.html')
+def manager(request):
+    return render(request, 'manager.html')
 
 
 # For CRUD Operations

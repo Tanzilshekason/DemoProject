@@ -5,10 +5,10 @@ from django.contrib.auth.models import AbstractUser
 class User_info(models.Model):
     firstname = models.CharField(max_length=45)
     lastname = models.CharField(max_length=45)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     password = models.CharField(max_length=10)
-    status = models.BooleanField(default=False)
-    created_date = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=True)
+    created_date = models.DateField()
     fb_token = models.CharField(max_length=100)
     twitter_token = models.CharField(max_length=100)
     google_token = models.CharField(max_length=100)
@@ -27,7 +27,7 @@ class User_wish_list(models.Model):
     product_id = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.title
+        return self.product_id
 
     class Meta:
         verbose_name = 'user_wish_list'
@@ -45,7 +45,7 @@ class User_address(models.Model):
     zipcode = models.CharField(max_length=45)
 
     def __str__(self):
-        return self.title
+        return self.user_id
 
     class Meta:
         verbose_name = 'user_address'
@@ -57,13 +57,13 @@ class Coupon(models.Model):
     code = models.CharField(max_length=45)
     percent_off = models.FloatField()
     created_by = models.IntegerField()
-    created_date = models.DateTimeField()
+    created_date = models.DateField()
     modify_by = models.IntegerField()
-    modify_date = models.DateTimeField()
+    modify_date = models.DateField()
     no_of_uses = models.IntegerField()
 
     def __str__(self):
-        return self.title
+        return self.code
 
     class Meta:
         verbose_name = 'coupon'
@@ -76,9 +76,6 @@ class Coupons_used(models.Model):
     order_id = models.IntegerField()
     created_date = models.DateField()
     coupon_id = models.ForeignKey(Coupon, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
 
     class Meta:
         verbose_name = 'coupon_used'
@@ -113,35 +110,19 @@ class Configuration(models.Model):
     created_date = models.DateField()
     modify_by = models.IntegerField()
     modify_date = models.DateField()
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.title
+        return self.conf_key
 
     class Meta:
         verbose_name = 'configuration'
         verbose_name_plural = 'configuration'
 
 
-
-class Coupons_used(models.Model):
-    user_id = models.IntegerField()
-    order_id = models.IntegerField()
-    created_date = models.DateField()
-    coupon_id = models.ForeignKey(Coupon, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name = 'coupons_used'
-        verbose_name_plural = 'coupons_used'
-
-
-
 class Contact_us(models.Model):
     name = models.CharField(max_length=45)
-    email = models.EmailField(max_length=45)
+    email = models.EmailField(max_length=45,unique=True)
     contact_no = models.CharField(max_length=45)
     message = models.TextField()
     note_adm = models.TextField()
@@ -151,7 +132,7 @@ class Contact_us(models.Model):
     modify_date = models.DateField()
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
         verbose_name = 'contact_us'
@@ -161,11 +142,11 @@ class Contact_us(models.Model):
 
 class Banners(models.Model):
     banner_path = models.CharField(max_length=255)
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
     images = models.ImageField()
 
     def __str__(self):
-        return self.title
+        return self.banner_path
 
     class Meta:
         verbose_name = 'banners'
@@ -198,10 +179,10 @@ class Category(models.Model):
     created_date = models.DateField()
     modify_by = models.IntegerField()
     modify_date = models.DateField()
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
         verbose_name = 'category'
@@ -231,7 +212,7 @@ class Product(models.Model):
     is_featured = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
         verbose_name = 'product'
@@ -243,8 +224,7 @@ class Product_category(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.title
+
 
     class Meta:
         verbose_name = 'product_category'
@@ -254,7 +234,7 @@ class Product_category(models.Model):
 
 class Product_images(models.Model):
     image_name = models.CharField(max_length=100)
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
     created_by = models.IntegerField()
     created_date = models.DateField()
     modify_by = models.IntegerField()
@@ -263,11 +243,11 @@ class Product_images(models.Model):
     product_image = models.ImageField()
 
     def __str__(self):
-        return self.title
+        return self.image_name
 
     class Meta:
-        verbose_name = 'product_images'
-        verbose_name_plural = 'product_images'
+        verbose_name = 'Product_images'
+        verbose_name_plural = 'Product_images'
 
 
 
@@ -277,8 +257,7 @@ class Order_details(models.Model):
     quantity = models.IntegerField()
     amount = models.FloatField()
 
-    def __str__(self):
-        return self.title
+
 
     class Meta:
         verbose_name = 'order_details'
@@ -294,7 +273,7 @@ class Payment_gateway(models.Model):
     modify_date = models.DateField()
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
         verbose_name = 'payment_gateway'
@@ -327,7 +306,7 @@ class User_order(models.Model):
     shipping_zipcode = models.CharField(max_length=45)
 
     def __str__(self):
-        return self.title
+        return self.billing_address1
 
     class Meta:
         verbose_name = 'user_order'
@@ -343,7 +322,7 @@ class Product_attributes(models.Model):
     modified_date = models.DateField()
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
         verbose_name = 'product_attributes'
@@ -360,7 +339,7 @@ class Product_attribute_value(models.Model):
     modified_date = models.DateField()
 
     def __str__(self):
-        return self.title
+        return self.attribute_value
 
     class Meta:
         verbose_name = 'product_attribute_value'
@@ -373,9 +352,6 @@ class Product_attribute_assoc(models.Model):
     product_attribute_id = models.ForeignKey(Product_attributes, on_delete=models.CASCADE)
     product_attribute_value_id = models.IntegerField()
 
-    def __str__(self):
-        return self.title
-
     class Meta:
         verbose_name = 'product_attribute_assoc'
         verbose_name_plural = 'product_attribute_assoc'
@@ -384,17 +360,16 @@ class Product_attribute_assoc(models.Model):
 class User(AbstractUser):
     is_admin = models.BooleanField('Is admin',default=False)
     is_customer = models.BooleanField('Is customer', default=False)
-    is_order = models.BooleanField('Is order', default=False)
+    is_manager = models.BooleanField('Is manager', default=False)
+
 
 # Model for CRUD operations
 class Manage_user(models.Model):
     name = models.CharField(max_length=200)
-    email = models.EmailField(max_length=100)
+    email = models.EmailField(max_length=100,unique=True)
     address = models.TextField()
-    phone = models.IntegerField()
+    phone = models.IntegerField(max_length=10)
 
     def __str__(self):
         return self.name
-
-
 

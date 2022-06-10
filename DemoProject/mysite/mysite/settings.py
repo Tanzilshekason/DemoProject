@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-e%_u)*zin(kn-m=0z)o*hmr+ni(d&o%_$b(52^p_+g_$sq3x^&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -134,6 +133,10 @@ STATICFILES_DIRS = [
 ]
 
 AUTH_USER_MODEL = 'adminpanel.User'
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 
 # Default primary key field type
