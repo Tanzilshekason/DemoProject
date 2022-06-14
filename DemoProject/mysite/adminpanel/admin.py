@@ -85,8 +85,9 @@ admin.site.register(Contact_us,Contact_usAdminSite)
 
 class BannersAdminSite(admin.ModelAdmin):
     model = Banners
-    fields = ['banner_path','status','images']
-    list_display = ('banner_path','status','images')
+    fields = ['banner_path','status','images','admin_photo']
+    list_display = ('banner_path','status','images','admin_photo')
+    readonly_fields = ('status','admin_photo')
 
 
 admin.site.register(Banners,BannersAdminSite)
@@ -133,9 +134,10 @@ admin.site.register(Product_category,Product_CategoryAdminSite)
 class Product_imagesAdminSite(admin.ModelAdmin):
     model = Product_images
     fields = ['image_name','status','created_by','created_date',
-              'modify_by','modify_date','product_id','product_image']
+              'modify_by','modify_date','product_id','product_image','admin_photo']
     list_display = ('image_name','status','created_by','created_date',
-                    'modify_by','modify_date','product_id','product_image')
+                    'modify_by','modify_date','product_id','product_image','admin_photo')
+    readonly_fields = ('status','admin_photo')
 
 
 admin.site.register(Product_images,Product_imagesAdminSite)

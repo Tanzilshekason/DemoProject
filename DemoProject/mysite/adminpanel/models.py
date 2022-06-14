@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+from django.template.defaultfilters import truncatechars
+from django.utils.safestring import mark_safe
+
+
 class User_info(models.Model):
     firstname = models.CharField(max_length=45)
     lastname = models.CharField(max_length=45)
@@ -152,6 +156,15 @@ class Banners(models.Model):
         verbose_name = 'banners'
         verbose_name_plural = 'banners'
 
+    @property
+    def short_description(self):
+        return truncatechars(self.description, 20)
+
+    def admin_photo(self):
+        return mark_safe('<img src="{}" width="100" />'.format(self.images.url))
+    admin_photo.short_description = 'Images'
+    admin_photo.allow_tags = True
+
 
 
 class Email_template(models.Model):
@@ -248,6 +261,16 @@ class Product_images(models.Model):
     class Meta:
         verbose_name = 'Product_images'
         verbose_name_plural = 'Product_images'
+
+    @property
+    def short_description(self):
+        return truncatechars(self.description, 20)
+
+    def admin_photo(self):
+        return mark_safe('<img src="{}" width="100" />'.format(self.product_image.url))
+
+    admin_photo.short_description = 'Product_image'
+    admin_photo.allow_tags = True
 
 
 
@@ -368,7 +391,7 @@ class Manage_user(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField(max_length=100,unique=True)
     address = models.TextField()
-    phone = models.IntegerField(max_length=10)
+    phone = models.IntegerField()
 
     def __str__(self):
         return self.name

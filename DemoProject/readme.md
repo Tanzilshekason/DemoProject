@@ -57,7 +57,19 @@ create the virtual environment,database connectivity --
 
 #### 9 June
 
-**
+** Banner management **
+-- Doing the banner management of the project --
 
+#### 10 June
+
+** Banner management **
+-- Done the crud operation for banner management --
+-- Done crud operations for all the tables in the admin panel--
+
+
+#### 14 June
+** Category Management **
+-- Doing Category management for demo Project --
+-- Add the images for Banners --
 
 
