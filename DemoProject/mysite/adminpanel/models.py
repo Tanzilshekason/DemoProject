@@ -1,10 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
-# Create your models here.
 from django.template.defaultfilters import truncatechars
 from django.utils.safestring import mark_safe
-
+# Create your models here.
 
 class User_info(models.Model):
     firstname = models.CharField(max_length=45)
@@ -38,7 +36,6 @@ class User_wish_list(models.Model):
         verbose_name_plural = 'user_wish_list'
 
 
-
 class User_address(models.Model):
     user_id = models.ForeignKey(User_info, on_delete=models.CASCADE)
     address1 = models.CharField(max_length=100)
@@ -54,7 +51,6 @@ class User_address(models.Model):
     class Meta:
         verbose_name = 'user_address'
         verbose_name_plural = 'user_address'
-
 
 
 class Coupon(models.Model):
@@ -74,7 +70,6 @@ class Coupon(models.Model):
         verbose_name_plural = 'coupon'
 
 
-
 class Coupons_used(models.Model):
     user_id = models.IntegerField()
     order_id = models.IntegerField()
@@ -84,7 +79,6 @@ class Coupons_used(models.Model):
     class Meta:
         verbose_name = 'coupon_used'
         verbose_name_plural = 'coupon_used'
-
 
 
 class Cms(models.Model):
@@ -104,7 +98,6 @@ class Cms(models.Model):
     class Meta:
         verbose_name = 'cms'
         verbose_name_plural = 'cms'
-
 
 
 class Configuration(models.Model):
@@ -143,7 +136,6 @@ class Contact_us(models.Model):
         verbose_name_plural = 'contact_us'
 
 
-
 class Banners(models.Model):
     banner_path = models.CharField(max_length=255)
     status = models.BooleanField(default=True)
@@ -166,7 +158,6 @@ class Banners(models.Model):
     admin_photo.allow_tags = True
 
 
-
 class Email_template(models.Model):
     title = models.CharField(max_length=45)
     subject = models.CharField(max_length=255)
@@ -182,8 +173,6 @@ class Email_template(models.Model):
     class Meta:
         verbose_name = 'email_template'
         verbose_name_plural = 'email_template'
-
-
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -201,6 +190,16 @@ class Category(models.Model):
         verbose_name = 'category'
         verbose_name_plural = 'category'
 
+class Sub_Category(models.Model):
+    name = models.CharField(max_length=100)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'sub_category'
+        verbose_name_plural = 'sub_category'
 
 
 class Product(models.Model):
@@ -212,12 +211,12 @@ class Product(models.Model):
     special_price = models.FloatField()
     special_price_from = models.DateField()
     special_price_to = models.DateField()
-    status = models.IntegerField()
+    status = models.BooleanField(default=True)
     quantity = models.IntegerField()
     meta_title = models.CharField(max_length=45)
     meta_description = models.TextField()
     meta_keywords = models.TextField()
-    status1 = models.IntegerField()
+    status1 = models.BooleanField(default=True)
     created_by = models.IntegerField()
     created_date = models.DateField()
     modify_by = models.IntegerField()
@@ -232,17 +231,13 @@ class Product(models.Model):
         verbose_name_plural = 'product'
 
 
-
 class Product_category(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-
-
     class Meta:
         verbose_name = 'product_category'
         verbose_name_plural = 'product_category'
-
 
 
 class Product_images(models.Model):
@@ -273,19 +268,15 @@ class Product_images(models.Model):
     admin_photo.allow_tags = True
 
 
-
 class Order_details(models.Model):
     order_id = models.IntegerField()
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     amount = models.FloatField()
 
-
-
     class Meta:
         verbose_name = 'order_details'
         verbose_name_plural = 'order_details'
-
 
 
 class Payment_gateway(models.Model):
@@ -301,7 +292,6 @@ class Payment_gateway(models.Model):
     class Meta:
         verbose_name = 'payment_gateway'
         verbose_name_plural = 'payment_gateway'
-
 
 
 class User_order(models.Model):

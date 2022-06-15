@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import SignUpForm, LoginForm
 from django.contrib.auth import authenticate, login
 from adminpanel.models import Manage_user
-
+from adminpanel.models import Category
 
 def index(request):
     return render(request, 'starter.html')
@@ -125,3 +125,11 @@ def Delete(request,id):
     }
 
     return redirect('home')
+
+def Index(request):
+    category = Category.objects.all()
+
+    context = {
+        'category': category
+    }
+    return render(request,context)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import User_info, User_wish_list,User_address, Coupon,Coupons_used,Cms
-from .models import Configuration, Contact_us, Banners,Email_template,Category
+from .models import Configuration, Contact_us, Banners,Email_template,Category,Sub_Category
 from .models import Product,Product_category,Product_images,Order_details,Payment_gateway
 from .models import User_order,Product_attributes,Product_attribute_value,Product_attribute_assoc
 from .models import User
@@ -109,6 +109,15 @@ class CategoryAdminSite(admin.ModelAdmin):
 
 
 admin.site.register(Category,CategoryAdminSite)
+
+class Sub_CategoryAdminSite(admin.ModelAdmin):
+    model = Sub_Category
+    fields = ['name','category']
+    list_display = ('name','category')
+
+
+admin.site.register(Sub_Category,Sub_CategoryAdminSite)
+
 
 
 class ProductAdminSite(admin.ModelAdmin):
