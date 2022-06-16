@@ -75,4 +75,11 @@ create the virtual environment,database connectivity --
 
 #### 15 June
 ** Product Management **
+-- Saved the products in products table and saved the product images
+in product images table --
+
+#### 16 June 
+** Product Management **
+-- Saved the product Categories in Product_category table and
+Product attribute assoc in Product_attribute_assoc table --
 

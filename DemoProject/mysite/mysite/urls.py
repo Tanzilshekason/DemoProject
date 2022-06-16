@@ -6,4 +6,5 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('adminpanel/', include('adminpanel.urls')),
     path('admin/', admin.site.urls),
+    path('',include('eshopper.urls'))
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
