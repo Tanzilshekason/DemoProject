@@ -83,3 +83,6 @@ in product images table --
 -- Saved the product Categories in Product_category table and
 Product attribute assoc in Product_attribute_assoc table --
 
+#### 17 June
+** Home Page-Frontend Design Setup **
+-- 
