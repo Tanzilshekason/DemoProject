@@ -86,3 +86,7 @@ Product attribute assoc in Product_attribute_assoc table --
 #### 17 June
 ** Home Page-Frontend Design Setup **
 -- 
+
+#### 20 June
+** Home Page-Frontend Design Setup **
+--

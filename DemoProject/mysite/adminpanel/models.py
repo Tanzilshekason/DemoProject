@@ -386,3 +386,15 @@ class Manage_user(models.Model):
     def __str__(self):
         return self.name
 
+class User_login(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100,unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'User_login'
+        verbose_name_plural = 'User_login'
+
+
