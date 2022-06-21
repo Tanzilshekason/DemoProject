@@ -397,4 +397,15 @@ class User_login(models.Model):
         verbose_name = 'User_login'
         verbose_name_plural = 'User_login'
 
+class User_register(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    password = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'User_register'
+        verbose_name_plural = 'User_register'
 

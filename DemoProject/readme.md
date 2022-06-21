@@ -90,3 +90,7 @@ Product attribute assoc in Product_attribute_assoc table --
 #### 20 June
 ** Home Page-Frontend Design Setup **
 --
+
+#### 21 June
+** User registration and User Login**
+-- Doing User registration and user Login for Customers--

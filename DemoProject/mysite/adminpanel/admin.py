@@ -4,7 +4,7 @@ from .models import Configuration, Contact_us, Banners,Email_template,Category,S
 from .models import Product,Product_category,Product_images,Order_details,Payment_gateway
 from .models import User_order,Product_attributes,Product_attribute_value,Product_attribute_assoc
 from .models import User
-from .models import Manage_user,User_login
+from .models import Manage_user,User_login,User_register
 
 admin.site.site_header = 'ADMINPANEL ADMIN'
 admin.site.site_title = 'ADMINPANEL ADMIN PORTAL'
@@ -225,6 +225,12 @@ class User_loginAdminSite(admin.ModelAdmin):
 
 admin.site.register(User_login,User_loginAdminSite)
 
+class User_registerAdminSite(admin.ModelAdmin):
+    model = User_register
+    fields = ['name','email','password']
+    list_display = ('name','email','password')
 
+
+admin.site.register(User_register,User_registerAdminSite)
 
 
