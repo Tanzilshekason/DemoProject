@@ -29,17 +29,6 @@ def SHOP(request):
 
 
 def LOGIN(request):
-    # if request.method == 'POST':
-    #     form = UserRegistrationForm(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #
-    #         messages.success(request, f'Your account has been created. You can log in now!')
-    #         return redirect('login')
-    # else:
-    #     form = UserRegistrationForm()
-    #
-    # context = {'form': form}
     return render(request, '/home/neosoft/PycharmProjects/DemoProject/mysite/eshopper/template/eshopper/register.html')
 
 def CART(request):
