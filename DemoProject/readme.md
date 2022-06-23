@@ -85,11 +85,11 @@ Product attribute assoc in Product_attribute_assoc table --
 
 #### 17 June
 ** Home Page-Frontend Design Setup **
--- 
+-- Doing Frontend design setup of home page --
 
 #### 20 June
 ** Home Page-Frontend Design Setup **
---
+-- Doing Frontend design setup of home page --
 
 #### 21 June
 ** User registration and User Login**
@@ -98,5 +98,8 @@ Product attribute assoc in Product_attribute_assoc table --
 #### 22 June
 ** Forgot Password **
 -- Doing Forgot Password for Demo Project --
+
+#### 23 June
+** User address management **
 
 
