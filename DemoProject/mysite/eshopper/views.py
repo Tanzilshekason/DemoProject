@@ -104,3 +104,5 @@ def HandleLogout(request):
 
     return redirect('eshopper')
 
+
+
