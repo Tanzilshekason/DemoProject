@@ -43,7 +43,11 @@ INSTALLED_APPS = [
     # apps
     'adminpanel',
     'eshopper',
+    'cart',
 ]
+
+CART_SESSION_ID = 'cart'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -70,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processor.cart_total_amount',
                 # 'social_django.context_processors.backends',
                 # 'social_django.context_processors.login_redirect',
             ],
@@ -185,7 +190,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'root13259@gmail.com'
-EMAIL_HOST_PASSWORD = '****'
+EMAIL_HOST_PASSWORD = '***'
 
 
 

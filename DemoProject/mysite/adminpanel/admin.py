@@ -122,12 +122,15 @@ admin.site.register(Sub_Category,Sub_CategoryAdminSite)
 
 class ProductAdminSite(admin.ModelAdmin):
     model = Product
-    fields = ['name','sku','short_description','long_description','price','special_price','special_price_from',
-              'special_price_to','status','quantity','meta_title','meta_description','meta_keywords',
-              'status1','created_by','created_date','modify_by','modify_date','is_featured']
-    list_display = ('name','sku','short_description','long_description','price','special_price','special_price_from',
-                    'special_price_to','status','quantity','meta_title','meta_description','meta_keywords',
-                    'status1','created_by','created_date','modify_by','modify_date','is_featured')
+    fields = ['category','sub_category','name','sku','shor_description','long_description','price',
+              'special_price','special_price_from','special_price_to','status','quantity','meta_title',
+              'meta_description','meta_keywords','status1','created_by','created_date','modify_by','modify_date',
+              'is_featured','image','admin_photo']
+    list_display = ('category','sub_category','name','sku','shor_description','long_description','price',
+                    'special_price','special_price_from','special_price_to','status','quantity','meta_title',
+                    'meta_description','meta_keywords','status1','created_by','created_date','modify_by','modify_date',
+                    'is_featured','image','admin_photo')
+    readonly_fields = ('status','admin_photo')
 
 
 admin.site.register(Product,ProductAdminSite)

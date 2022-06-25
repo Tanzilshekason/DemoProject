@@ -2,19 +2,40 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login,logout
+from adminpanel.models import Category, Product
+from django.contrib.auth.decorators import login_required
+from cart.cart import Cart
 # from django.contrib import messages
-# from .forms import UserRegistrationForm
 # Create your views here.
 
 User = get_user_model()
 
 
 def index(request):
-    return render(request, 'index.html')
+    category = Category.objects.all()
+    product = Product.objects.all()
+    categoryID = request.GET.get('category')
+    if categoryID:
+        product = Product.objects.filter(sub_category=categoryID).order_by('-id')
+    else:
+        product = Product.objects.all()
+
+    context = {
+        'category':category,
+        'product':product,
+    }
+    return render(request,'index.html',context)
 
 
 def INDEX(request):
-    return render(request,'index1.html')
+    category = Category.objects.all()
+    product = Product.objects.all()
+
+    context = {
+        'category': category,
+        'product': product,
+    }
+    return render(request,'index1.html',context)
 
 def BASE(request):
     return render(request, '/home/neosoft/PycharmProjects/DemoProject/mysite/eshopper/template/eshopper/base.html')
@@ -25,7 +46,14 @@ def CONTACT(request):
 
 
 def SHOP(request):
-    return render(request,'/home/neosoft/PycharmProjects/DemoProject/mysite/eshopper/template/eshopper/shop.html')
+    category = Category.objects.all()
+    product = Product.objects.all()
+
+    context = {
+        'category': category,
+        'product': product,
+    }
+    return render(request,'shop.html',context)
 
 
 def LOGIN(request):
@@ -94,4 +122,46 @@ def HandleLogout(request):
     return redirect('eshopper')
 
 
+@login_required(login_url="/login/")
+def cart_add(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.add(product=product)
+    return redirect('index')
+
+
+@login_required(login_url="/login/")
+def item_clear(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.remove(product)
+    return redirect("cart_detail")
+
+
+@login_required(login_url="/login/")
+def item_increment(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.add(product=product)
+    return redirect("cart_detail")
+
+
+@login_required(login_url="/login/")
+def item_decrement(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.decrement(product=product)
+    return redirect("cart_detail")
+
+
+@login_required(login_url="//login/")
+def cart_clear(request):
+    cart = Cart(request)
+    cart.clear()
+    return redirect("cart_detail")
+
+
+@login_required(login_url="/login/")
+def cart_detail(request):
+    return render(request, 'cart_detail.html')
 

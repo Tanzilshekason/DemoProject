@@ -100,6 +100,10 @@ Product attribute assoc in Product_attribute_assoc table --
 -- Doing Forgot Password for Demo Project --
 
 #### 23 June
-** User address management **
+** Shopping Cart **
+-- Doing shopping cart in demo project --
 
+#### 24 June
+** Shopping Cart **
+-- Doing shopping cart in demo project --
 

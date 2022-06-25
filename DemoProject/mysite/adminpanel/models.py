@@ -203,9 +203,11 @@ class Sub_Category(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=100)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE,null=False,default='')
+    sub_category = models.ForeignKey(Sub_Category,on_delete=models.CASCADE,null=False,default='')
+    name = models.CharField(max_length=100,)
     sku = models.CharField(max_length=45)
-    short_description = models.CharField(max_length=100)
+    shor_description = models.CharField(max_length=100)
     long_description = models.TextField()
     price = models.FloatField()
     special_price = models.FloatField()
@@ -221,14 +223,28 @@ class Product(models.Model):
     created_date = models.DateField()
     modify_by = models.IntegerField()
     modify_date = models.DateField()
-    is_featured = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=True)
+    image = models.ImageField(upload_to='media/photos')
 
-    def __str__(self):
-        return self.name
 
     class Meta:
         verbose_name = 'product'
         verbose_name_plural = 'product'
+
+    @property
+    def short_description(self):
+        return truncatechars(self.short_description,20)
+
+    def admin_photo(self):
+        return mark_safe('<img src="{}" width="100" />'.format(self.image.url))
+
+    admin_photo.short_description = 'Image'
+    admin_photo.allow_tags = True
+
+    def __str__(self):
+        return self.name
+
+
 
 
 class Product_category(models.Model):
