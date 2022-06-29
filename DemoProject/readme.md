@@ -116,4 +116,6 @@ Product attribute assoc in Product_attribute_assoc table --
 ** My Account **
 -- Doing my account for user in demo project --
 
-
+#### 29 June
+** Checkout **
+-- Doing Checkout page in demo project --

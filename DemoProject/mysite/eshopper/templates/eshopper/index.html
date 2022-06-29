@@ -132,7 +132,6 @@
 										<li><a href="{% url 'product_details' %}">Product Details</a></li>
 										<li><a href="{% url 'checkout' %}">Checkout</a></li>
 										<li><a href="{% url 'cart_detail' %}">Cart</a></li>
-										<li><a href="{% url 'login' %}">Login</a></li>
                                     </ul>
                                 </li>
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
@@ -249,7 +248,7 @@
 								<div id="sportswear" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-											{% for i in cat.sub_category_set.all %}
+											{% for i in cat.subcategory_set.all %}
 											<li><a href="/?category={{i.id}}">{{i.name}}</a></li>
 											{% endfor %}
 										</ul>
@@ -914,5 +913,6 @@
 	<script src="{% static 'js/price-range.js' %}"></script>
     <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script>
     <script src="{% static 'js/main1.js' %}"></script>
+	<script src="{% static 'js/cart.js' %}"></script>
 </body>
 </html>

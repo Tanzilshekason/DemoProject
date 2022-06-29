@@ -16,7 +16,7 @@ urlpatterns = [
     path('blog/',views.blog,name='blog'),
     path('blog_single/',views.blog_single,name='blog_single'),
     path('checkout/',views.checkout,name='checkout'),
-    path('product_details/',views.product_details,name='product_details'),
+    path('product/',views.product_details,name='product_details'),
 
     # urls for login and register
     path('register/',views.handle_register,name='register'),

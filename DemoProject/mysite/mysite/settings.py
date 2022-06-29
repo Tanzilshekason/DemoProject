@@ -68,7 +68,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 'DIRS': [r'/home/neosoft/PycharmProjects/DemoProject/mysite/adminpanel/template/adminpanel'],
-        'DIRS': [r'/home/neosoft/PycharmProjects/DemoProject/mysite/eshopper/template/eshopper'],
+        'DIRS': [r'/home/neosoft/PycharmProjects/DemoProject/mysite/eshopper/templates/eshopper'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
