@@ -1,0 +1,28 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<section id="form">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <div class="edit-form">
+                    <h1>My Account</h1>
+                </div>
+                    <a href="{% url 'logout' %}" class="button is-danger">Log Out</a>
+                    <hr>
+                <h2 class="subtitle">Account Information</h2>
+                <div class="mb-6">
+                <p><strong>Name: </strong>{{ request.user.get_full_name }}</p>
+                <p><strong>Username: </strong>{{ request.user.username }}</p>
+                <p><strong>E-mail: </strong>{{ request.user.email }}</p>
+            </div>
+                <div>
+                    <a href="{% url 'edit_account' %}">Edit</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

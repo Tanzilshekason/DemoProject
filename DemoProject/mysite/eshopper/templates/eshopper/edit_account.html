@@ -1,0 +1,47 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<section id="form">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <div class="edit-form">
+                    <h2>Edit account</h2>
+                    <form method="post" action="." class="space-y-3">
+                    {% csrf_token %}
+                        <div>
+                            <Label>First Name</Label>
+                            <input name="first_name" value="{{ request.user.first_name }}" type="text">
+                        </div>
+
+                        <div>
+                        <Label>Last Name</Label>
+                        <input name="last_name" value="{{ request.user.last_name }}" type="text">
+                        </div>
+
+                        <div>
+                        <Label>UserName</Label>
+                        <input name="username" value="{{ request.user.username }}" type="text">
+                        </div>
+
+                        <div>
+                        <Label>Email</Label>
+                        <input name="email" value="{{ request.user.email }}" type="email">
+                        </div>
+
+                        <div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+                <div class="col-sm-1">
+					<h2 class="or">OR</h2>
+				</div>
+        </div>
+    </div>
+</section>
+{% endblock %}

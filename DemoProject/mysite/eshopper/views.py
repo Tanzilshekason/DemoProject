@@ -2,32 +2,36 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login,logout
-from adminpanel.models import Category, Product
+from adminpanel.models import Category, Product, Brand
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 # from django.contrib import messages
-# Create your views here.
 
 User = get_user_model()
 
-
+# Create your views here.
 def index(request):
     category = Category.objects.all()
     product = Product.objects.all()
+    brand = Brand.objects.all()
+    brandId = request.GET.get('brand')
     categoryID = request.GET.get('category')
     if categoryID:
         product = Product.objects.filter(sub_category=categoryID).order_by('-id')
+    elif brandId:
+        product = Product.objects.filter(brand=brandId).order_by('-id')
     else:
         product = Product.objects.all()
 
     context = {
         'category':category,
         'product':product,
+        'brand':brand,
     }
-    return render(request,'index.html',context)
+    return render(request,'eshopper/index.html',context)
 
 
-def INDEX(request):
+def index1(request):
     category = Category.objects.all()
     product = Product.objects.all()
 
@@ -35,17 +39,17 @@ def INDEX(request):
         'category': category,
         'product': product,
     }
-    return render(request,'index1.html',context)
+    return render(request,'eshopper/index1.html',context)
 
-def BASE(request):
-    return render(request, '/home/neosoft/PycharmProjects/DemoProject/mysite/eshopper/template/eshopper/base.html')
-
-
-def CONTACT(request):
-    return render(request,'/home/neosoft/PycharmProjects/DemoProject/mysite/eshopper/template/eshopper/contactus.html')
+def base(request):
+    return render(request, 'eshopper/base.html')
 
 
-def SHOP(request):
+def contact(request):
+    return render(request,'eshopper/contactus.html')
+
+
+def shop(request):
     category = Category.objects.all()
     product = Product.objects.all()
 
@@ -53,37 +57,39 @@ def SHOP(request):
         'category': category,
         'product': product,
     }
-    return render(request,'shop.html',context)
+    return render(request,'eshopper/shop.html',context)
 
 
-def LOGIN(request):
-    return render(request, '/home/neosoft/PycharmProjects/DemoProject/mysite/eshopper/template/eshopper/register.html')
+def Login(request):
+    return render(request, 'eshopper/register.html')
 
-def CART(request):
-    return render(request,'/home/neosoft/PycharmProjects/DemoProject/mysite/eshopper/template/eshopper/cart.html')
-
-
-def FOUR(request):
-    return render(request,'/home/neosoft/PycharmProjects/DemoProject/mysite/eshopper/template/eshopper/four.html')
+def cart(request):
+    return render(request,'eshopper/cart.html')
 
 
-def BLOG(request):
-    return render(request,'blog.html')
+def four(request):
+    return render(request,'eshopper/four.html')
 
 
-def BLOG_SINGLE(request):
-    return render(request,'blog_single.html')
+def blog(request):
+    return render(request,'eshopper/blog.html')
 
 
-def CHECKOUT(request):
-    return render(request,'checkout.html')
+def blog_single(request):
+    return render(request,'eshopper/blog_single.html')
 
 
-def PRODUCT_DETAILS(request):
-    return render(request,'product_details.html')
+def checkout(request):
+    return render(request,'eshopper/checkout.html')
 
 
-def HandleRegister(request):
+def product_details(request):
+    return render(request,'eshopper/product_details.html')
+
+
+
+# Register and lohgin page views
+def handle_register(request):
     if request.method == "POST":
         username = request.POST.get('username')
         first_name = request.POST.get('first_name')
@@ -98,10 +104,10 @@ def HandleRegister(request):
         customer.save()
         return redirect('register')
 
-    return render(request,'register.html')
+    return render(request,'eshopper/register.html')
 
 
-def HandleLogin(request):
+def handle_login(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -113,21 +119,44 @@ def HandleLogin(request):
         else:
             return redirect('register')
 
-    return render(request,'register.html')
+    return render(request,'eshopper/register.html')
 
 
-def HandleLogout(request):
+def handle_logout(request):
     logout(request)
 
     return redirect('eshopper')
 
+
+
+# views for My Account of user
+
+def account(request):
+    return render(request,'eshopper/account.html')
+
+def edit_account(request):
+    if request.method == "POST":
+        user = request.user
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.username = request.POST.get('username')
+        user.email = request.POST.get('email')
+        user.save()
+
+        return redirect('account')
+
+    return render(request,'eshopper/edit_account.html')
+
+
+
+# add to cart code
 
 @login_required(login_url="/login/")
 def cart_add(request, id):
     cart = Cart(request)
     product = Product.objects.get(id=id)
     cart.add(product=product)
-    return redirect('index')
+    return redirect('eshopper')
 
 
 @login_required(login_url="/login/")
@@ -154,7 +183,7 @@ def item_decrement(request, id):
     return redirect("cart_detail")
 
 
-@login_required(login_url="//login/")
+@login_required(login_url="/login/")
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
@@ -163,5 +192,5 @@ def cart_clear(request):
 
 @login_required(login_url="/login/")
 def cart_detail(request):
-    return render(request, 'cart_detail.html')
+    return render(request, 'eshopper/cart_detail.html')
 

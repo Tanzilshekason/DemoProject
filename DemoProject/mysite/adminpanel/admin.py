@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import User_info, User_wish_list,User_address, Coupon,Coupons_used,Cms
-from .models import Configuration, Contact_us, Banners,Email_template,Category,Sub_Category
+from .models import Configuration, Contact_us, Banners,Email_template,Category,Sub_Category,Brand
 from .models import Product,Product_category,Product_images,Order_details,Payment_gateway
 from .models import User_order,Product_attributes,Product_attribute_value,Product_attribute_assoc
 from .models import User
@@ -110,6 +110,15 @@ class CategoryAdminSite(admin.ModelAdmin):
 
 admin.site.register(Category,CategoryAdminSite)
 
+
+class BrandAdminSite(admin.ModelAdmin):
+    model = Brand
+    fields = ['name']
+
+
+admin.site.register(Brand,BrandAdminSite)
+
+
 class Sub_CategoryAdminSite(admin.ModelAdmin):
     model = Sub_Category
     fields = ['name','category']
@@ -122,11 +131,11 @@ admin.site.register(Sub_Category,Sub_CategoryAdminSite)
 
 class ProductAdminSite(admin.ModelAdmin):
     model = Product
-    fields = ['category','sub_category','name','sku','shor_description','long_description','price',
+    fields = ['category','sub_category','brand','name','sku','shor_description','long_description','price',
               'special_price','special_price_from','special_price_to','status','quantity','meta_title',
               'meta_description','meta_keywords','status1','created_by','created_date','modify_by','modify_date',
               'is_featured','image','admin_photo']
-    list_display = ('category','sub_category','name','sku','shor_description','long_description','price',
+    list_display = ('category','sub_category','brand','name','sku','shor_description','long_description','price',
                     'special_price','special_price_from','special_price_to','status','quantity','meta_title',
                     'meta_description','meta_keywords','status1','created_by','created_date','modify_by','modify_date',
                     'is_featured','image','admin_photo')
@@ -235,5 +244,7 @@ class User_registerAdminSite(admin.ModelAdmin):
 
 
 admin.site.register(User_register,User_registerAdminSite)
+
+
 
 

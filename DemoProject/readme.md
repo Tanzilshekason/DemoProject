@@ -107,3 +107,13 @@ Product attribute assoc in Product_attribute_assoc table --
 ** Shopping Cart **
 -- Doing shopping cart in demo project --
 
+
+#### 27 June
+** shopping Cart **
+-- Doing shopping cart in demo project --
+
+#### 28 June
+** My Account **
+-- Doing my account for user in demo project --
+
+

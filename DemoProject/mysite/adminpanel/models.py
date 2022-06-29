@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.template.defaultfilters import truncatechars
 from django.utils.safestring import mark_safe
+
 # Create your models here.
 
 class User_info(models.Model):
@@ -201,10 +202,21 @@ class Sub_Category(models.Model):
         verbose_name = 'sub_category'
         verbose_name_plural = 'sub_category'
 
+class Brand(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'brand'
+        verbose_name_plural = 'brand'
+
 
 class Product(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE,null=False,default='')
     sub_category = models.ForeignKey(Sub_Category,on_delete=models.CASCADE,null=False,default='')
+    brand = models.ForeignKey(Brand,on_delete=models.CASCADE,null=True)
     name = models.CharField(max_length=100,)
     sku = models.CharField(max_length=45)
     shor_description = models.CharField(max_length=100)
@@ -415,7 +427,7 @@ class User_login(models.Model):
 
 class User_register(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField()
+    email = models.EmailField(max_length=100,unique=True)
     password = models.CharField(max_length=25)
 
     def __str__(self):
@@ -424,4 +436,6 @@ class User_register(models.Model):
     class Meta:
         verbose_name = 'User_register'
         verbose_name_plural = 'User_register'
+
+
 
