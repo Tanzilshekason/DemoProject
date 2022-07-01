@@ -4,7 +4,7 @@ from .models import configuration, contactus, banners,emailtemplate,categorys,su
 from .models import products,productcategory,productimages,orderdetails,paymentgateway
 from .models import userorder,productattributes,productattributevalue,productattributeassoc
 from .models import user
-from .models import manageuser,userlogin,userregister
+from .models import manageuser,userlogin,userregister,filterprices,images
 
 admin.site.site_header = 'ADMINPANEL ADMIN'
 admin.site.site_title = 'ADMINPANEL ADMIN PORTAL'
@@ -74,10 +74,8 @@ admin.site.register(configuration,configurationAdminSite)
 
 class contactusAdminSite(admin.ModelAdmin):
     model = contactus
-    fields = ['name','email','contact_no','message','note_adm','created_by',
-              'created_date','modify_by','modify_date']
-    list_display = ('name','email','contact_no','message','note_adm','created_by',
-                    'created_date','modify_by','modify_date')
+    fields = ['name','email','subject','message']
+    list_display = ('name','email','subject','message')
 
 
 admin.site.register(contactus,contactusAdminSite)
@@ -128,21 +126,30 @@ class subcategoryAdminSite(admin.ModelAdmin):
 admin.site.register(subcategory,subcategoryAdminSite)
 
 
+class imagesTublerinline(admin.TabularInline):
+    model = images
+    fields = ['image','products','admin_photo']
+    list_display = ('image','products','admin_photo')
+    readonly_fields = ('products','admin_photo')
 
-class productsAdminSite(admin.ModelAdmin):
-    model = products
+
+admin.site.register(images)
+
+
+class productsInlineAdmin(admin.ModelAdmin):
+    inlines = [imagesTublerinline]
     fields = ['category','sub_category','brand','name','sku','shor_description','long_description','price',
               'special_price','special_price_from','special_price_to','status','quantity','meta_title',
               'meta_description','meta_keywords','status1','created_by','created_date','modify_by','modify_date',
-              'is_featured','image','admin_photo']
+              'is_featured','image','admin_photo','Availability','filter_price']
     list_display = ('category','sub_category','brand','name','sku','shor_description','long_description','price',
                     'special_price','special_price_from','special_price_to','status','quantity','meta_title',
                     'meta_description','meta_keywords','status1','created_by','created_date','modify_by','modify_date',
-                    'is_featured','image','admin_photo')
+                    'is_featured','image','admin_photo','Availability','filter_price')
     readonly_fields = ('status','admin_photo')
 
 
-admin.site.register(products,productsAdminSite)
+admin.site.register(products,productsInlineAdmin)
 
 class productcategoryAdminSite(admin.ModelAdmin):
     model = productcategory
@@ -244,6 +251,8 @@ class userregisterAdminSite(admin.ModelAdmin):
 
 
 admin.site.register(userregister,userregisterAdminSite)
+
+admin.site.register(filterprices)
 
 
 

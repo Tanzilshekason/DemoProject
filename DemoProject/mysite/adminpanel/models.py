@@ -121,13 +121,14 @@ class configuration(models.Model):
 class contactus(models.Model):
     name = models.CharField(max_length=45)
     email = models.EmailField(max_length=45,unique=True)
-    contact_no = models.CharField(max_length=45)
+    subject = models.CharField(max_length=100)
     message = models.TextField()
-    note_adm = models.TextField()
-    created_by = models.IntegerField()
-    created_date = models.DateField()
-    modify_by = models.IntegerField()
-    modify_date = models.DateField()
+    # contact_no = models.CharField(max_length=45)
+    # note_adm = models.TextField()
+    # created_by = models.IntegerField()
+    # created_date = models.DateField()
+    # modify_by = models.IntegerField()
+    # modify_date = models.DateField()
 
     def __str__(self):
         return self.name
@@ -213,7 +214,22 @@ class brands(models.Model):
         verbose_name_plural = 'brands'
 
 
+class filterprices(models.Model):
+    FILTER_PRICE = (
+        ('100 TO 199','100 TO 199'),
+        ('200 TO 299','200 TO 299'),
+        ('300 TO 399', '300 TO 399'),
+        ('400 TO 499', '400 TO 499'),
+        ('500 TO 600', '500 TO 600'),
+    )
+    price = models.CharField(choices=FILTER_PRICE,max_length=60)
+
+    def __str__(self):
+        return self.price
+
 class products(models.Model):
+    Availability = (('In Stock','In Stock'),('Out Of Stock','Out Of Stock'))
+
     category = models.ForeignKey(categorys,on_delete=models.CASCADE,null=False,default='')
     sub_category = models.ForeignKey(subcategory,on_delete=models.CASCADE,null=False,default='')
     brand = models.ForeignKey(brands,on_delete=models.CASCADE,null=True)
@@ -237,6 +253,9 @@ class products(models.Model):
     modify_date = models.DateField()
     is_featured = models.BooleanField(default=True)
     image = models.ImageField(upload_to='media/photos')
+    filter_price = models.ForeignKey(filterprices,on_delete=models.CASCADE)
+    Availability = models.CharField(choices=Availability,null=True,max_length=100)
+
 
 
     class Meta:
@@ -256,7 +275,23 @@ class products(models.Model):
     def __str__(self):
         return self.name
 
+class images(models.Model):
+    image = models.ImageField(upload_to='media/photos')
+    products = models.ForeignKey(products,on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = 'images'
+        verbose_name_plural = 'images'
+
+    @property
+    def short_description(self):
+        return truncatechars(self.short_description, 20)
+
+    def admin_photo(self):
+        return mark_safe('<img src="{}" width="100" />'.format(self.image.url))
+
+    admin_photo.short_description = 'Images'
+    admin_photo.allow_tags = True
 
 
 class productcategory(models.Model):
@@ -442,4 +477,10 @@ class userregister(models.Model):
         verbose_name_plural = 'User register'
 
 
+# class order(models.Model):
+#     image = models.ImageField(upload_to='media/order/image')
+#     product = models.ForeignKey(products, on_delete=models.CASCADE)
+#     user = models.ForeignKey(user,on_delete=models.CASCADE)
+#     quantity = models.CharField(max_length=5)
+#     price = models.IntegerField()
 

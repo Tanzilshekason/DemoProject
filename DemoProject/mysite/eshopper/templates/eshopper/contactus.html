@@ -9,15 +9,24 @@
 	    		<div class="col-sm-12">
 					<h2 class="title text-center">Contact <strong>Us</strong></h2>
 					<div id="gmap" class="contact-map">
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15076.67933111621!2d72.
+						99990627261691!3d19.14404179278075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.
+						1!3m3!1m2!1s0x3be7c0a7622d1ecd%3A0x831ef98b66021743!2sRabale%2C%20Navi%20Mumbai%2C%20Maharashtr
+						a!5e0!3m2!1sen!2sin!4v1656568553076!5m2!1sen!2sin"
+								width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+								referrerpolicy="no-referrer-when-downgrade"></iframe>
+
 					</div>
 				</div>
 			</div>
+			<br>
     		<div class="row">
 	    		<div class="col-sm-8">
 	    			<div class="contact-form">
 	    				<h2 class="title text-center">Get In Touch</h2>
 	    				<div class="status alert alert-success" style="display: none"></div>
 				    	<form id="main-contact-form" class="contact-form row" name="contact-form" method="post">
+							{% csrf_token %}
 				            <div class="form-group col-md-6">
 				                <input type="text" name="name" class="form-control"
                                        required="required" placeholder="Name">

@@ -9,14 +9,12 @@ urlpatterns = [
     # urls for eshopper website
     path('base/',views.base,name='base'),
     path('contactus/',views.contact,name='contact'),
-    path('shop/',views.shop,name='shop'),
     path('login/',views.Login,name='login'),
     path('cart/',views.cart,name='cart'),
-    path('four/',views.four,name='four'),
     path('blog/',views.blog,name='blog'),
     path('blog_single/',views.blog_single,name='blog_single'),
     path('checkout/',views.checkout,name='checkout'),
-    path('product/',views.product_details,name='product_details'),
+    path('product_detail/<int:id>/',views.product_details,name='product_details'),
 
     # urls for login and register
     path('register/',views.handle_register,name='register'),

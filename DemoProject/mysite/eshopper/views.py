@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login,logout
-from adminpanel.models import categorys, products, brands
+from adminpanel.models import categorys, products, brands, contactus,filterprices
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 # from django.contrib import messages
@@ -13,12 +13,16 @@ User = get_user_model()
 def index(request):
     category = categorys.objects.all()
     brand = brands.objects.all()
+    filter_price = filterprices.objects.all()
     brandId = request.GET.get('brand')
     categoryID = request.GET.get('category')
+    PRICE_FILTER_ID = request.GET.get('filter_price')
     if categoryID:
         product = products.objects.filter(sub_category=categoryID).order_by('-id')
     elif brandId:
         product = products.objects.filter(brand=brandId).order_by('-id')
+    elif PRICE_FILTER_ID:
+        product = products.objects.filter(filter_price = PRICE_FILTER_ID)
     else:
         product = products.objects.all()
 
@@ -26,6 +30,7 @@ def index(request):
         'category':category,
         'product':product,
         'brand':brand,
+        'filter_price':filter_price
     }
     return render(request,'eshopper/index.html',context)
 
@@ -45,39 +50,27 @@ def base(request):
 
 
 def contact(request):
+    if request.method == "POST":
+        contact = contactus(
+            name=request.POST.get('name'),
+            email=request.POST.get('email'),
+            subject=request.POST.get('subject'),
+            # contact_no=request.POST.get('contact_no'),
+            message=request.POST.get('message'),
+            # note_adm=request.POST.get('note_adm'),
+            # created_by=request.POST.get('created_by'),
+            # created_date=request.POST.get('created_date'),
+            # modify_by=request.POST.get('modify_by'),
+            # modify_date=request.POST.get('modify_date'),
+        )
+        contact.save()
     return render(request,'eshopper/contactus.html')
-
-
-def shop(request):
-    category = categorys.objects.all()
-    brand = brands.objects.all()
-    brandId = request.GET.get('brand')
-    categoryID = request.GET.get('category')
-    if categoryID:
-        product = products.objects.filter(sub_category=categoryID).order_by('-id')
-    elif brandId:
-        product = products.objects.filter(brand=brandId).order_by('-id')
-    else:
-        product = products.objects.all()
-
-    context = {
-        'category': category,
-        'product': product,
-        'brand': brand,
-    }
-    return render(request,'eshopper/shop.html',context)
-
 
 def Login(request):
     return render(request, 'eshopper/register.html')
 
 def cart(request):
     return render(request,'eshopper/cart.html')
-
-
-def four(request):
-    return render(request,'eshopper/four.html')
-
 
 def blog(request):
     return render(request,'eshopper/blog.html')
@@ -91,16 +84,28 @@ def checkout(request):
     return render(request,'eshopper/checkout.html')
 
 
-def product_details(request):
-    # product = products.objects.filter(id=id).first()
-    # context = {
-    #     'product':product
-    # }
-    return render(request,'eshopper/product_details.html')
+def product_details(request,id):
+    category = categorys.objects.all()
+    brand = brands.objects.all()
+    brandId = request.GET.get('brand')
+    categoryID = request.GET.get('category')
+    if categoryID:
+        product = products.objects.filter(sub_category=categoryID).order_by('-id')
+    elif brandId:
+        product = products.objects.filter(brand=brandId).order_by('-id')
+    else:
+        product = products.objects.all()
+    product = products.objects.filter(id=id).first()
+    context = {
+        'category': category,
+        'brand':brand,
+        'product':product,
+    }
+    return render(request,'eshopper/product_details.html',context)
 
 
 
-# Register and lohgin page views
+# Register and login page views
 def handle_register(request):
     if request.method == "POST":
         username = request.POST.get('username')
