@@ -119,3 +119,10 @@ Product attribute assoc in Product_attribute_assoc table --
 #### 29 June
 ** Checkout **
 -- Doing Checkout page in demo project --
+
+#### 30 June
+** Checkout **
+-- Doing Checkout page in demo project --
+
+#### 1 July
+** Checkout **

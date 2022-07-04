@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login,logout
-from adminpanel.models import categorys, products, brands, contactus,filterprices
+from adminpanel.models import Categorys, Products, Brands, Contactus,Filterprices,Images
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 # from django.contrib import messages
@@ -11,20 +11,20 @@ User = get_user_model()
 
 # Create your views here.
 def index(request):
-    category = categorys.objects.all()
-    brand = brands.objects.all()
-    filter_price = filterprices.objects.all()
+    category = Categorys.objects.all()
+    brand = Brands.objects.all()
+    filter_price = Filterprices.objects.all()
     brandId = request.GET.get('brand')
     categoryID = request.GET.get('category')
     PRICE_FILTER_ID = request.GET.get('filter_price')
     if categoryID:
-        product = products.objects.filter(sub_category=categoryID).order_by('-id')
+        product = Products.objects.filter(sub_category=categoryID).order_by('-id')
     elif brandId:
-        product = products.objects.filter(brand=brandId).order_by('-id')
+        product = Products.objects.filter(brand=brandId).order_by('-id')
     elif PRICE_FILTER_ID:
-        product = products.objects.filter(filter_price = PRICE_FILTER_ID)
+        product = Products.objects.filter(filter_price=PRICE_FILTER_ID)
     else:
-        product = products.objects.all()
+        product = Products.objects.all()
 
     context = {
         'category':category,
@@ -36,8 +36,8 @@ def index(request):
 
 
 def index1(request):
-    category = categorys.objects.all()
-    product = products.objects.all()
+    category = Categorys.objects.all()
+    product = Products.objects.all()
 
     context = {
         'category': category,
@@ -51,7 +51,7 @@ def base(request):
 
 def contact(request):
     if request.method == "POST":
-        contact = contactus(
+        contact = Contactus(
             name=request.POST.get('name'),
             email=request.POST.get('email'),
             subject=request.POST.get('subject'),
@@ -85,24 +85,31 @@ def checkout(request):
 
 
 def product_details(request,id):
-    category = categorys.objects.all()
-    brand = brands.objects.all()
-    brandId = request.GET.get('brand')
-    categoryID = request.GET.get('category')
-    if categoryID:
-        product = products.objects.filter(sub_category=categoryID).order_by('-id')
-    elif brandId:
-        product = products.objects.filter(brand=brandId).order_by('-id')
-    else:
-        product = products.objects.all()
-    product = products.objects.filter(id=id).first()
+    category = Categorys.objects.all()
+    brand = Brands.objects.all()
+    product = Products.objects.filter(id=id).first()
+    # product = products.objects.filter(id=id).first()
+    image_list = Images.objects.filter(product=product)
+
     context = {
         'category': category,
         'brand':brand,
         'product':product,
+        'image_list': image_list,
     }
     return render(request,'eshopper/product_details.html',context)
 
+
+def wishlist(request):
+    return render(request,'wishlist.html')
+
+
+@login_required(login_url="/login/")
+def wishlist_add(request, id):
+    wishlist = Cart(request)
+    product = Products.objects.get(id=id)
+    wishlist.add(product=product)
+    return redirect('wishlist')
 
 
 # Register and login page views
@@ -171,7 +178,7 @@ def edit_account(request):
 @login_required(login_url="/login/")
 def cart_add(request, id):
     cart = Cart(request)
-    product = products.objects.get(id=id)
+    product = Products.objects.get(id=id)
     cart.add(product=product)
     return redirect('eshopper')
 
@@ -179,7 +186,7 @@ def cart_add(request, id):
 @login_required(login_url="/login/")
 def item_clear(request, id):
     cart = Cart(request)
-    product = products.objects.get(id=id)
+    product = Products.objects.get(id=id)
     cart.remove(product)
     return redirect("cart_detail")
 
@@ -187,7 +194,7 @@ def item_clear(request, id):
 @login_required(login_url="/login/")
 def item_increment(request, id):
     cart = Cart(request)
-    product = products.objects.get(id=id)
+    product = Products.objects.get(id=id)
     cart.add(product=product)
     return redirect("cart_detail")
 
@@ -195,7 +202,7 @@ def item_increment(request, id):
 @login_required(login_url="/login/")
 def item_decrement(request, id):
     cart = Cart(request)
-    product = products.objects.get(id=id)
+    product = Products.objects.get(id=id)
     cart.decrement(product=product)
     return redirect("cart_detail")
 
@@ -210,4 +217,5 @@ def cart_clear(request):
 @login_required(login_url="/login/")
 def cart_detail(request):
     return render(request, 'eshopper/cart_detail.html')
+
 

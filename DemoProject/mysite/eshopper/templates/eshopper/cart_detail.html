@@ -3,6 +3,29 @@
 
 {% block content %}
 {% load static %}
+{% if request.session.cart|length < 1 %}
+
+
+<div class="empty-cart-area pb-100px pt-100px">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="cart-reading">
+					<h2>Your cart item</h2>
+				</div>
+				<div class="empty-text-contain text-center">
+					<i class="pe-7s-shopbag"></i>
+					<h3>There are no more items in your cart</h3>
+					<a class="empty-cart-btn" href="{% url 'eshopper' %}">
+						<i class="fa fa-arrow-left"></i>Continue shopping
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% else %}
 
 <section id="cart_items">
 		<div class="container">
@@ -17,7 +40,7 @@
 					<thead>
 						<tr class="cart_menu">
 							<td class="image">Item</td>
-							<td class="description"></td>
+							<td class="description">Description</td>
 							<td class="price">Price</td>
 							<td class="quantity">Quantity</td>
 							<td class="total">Total</td>
@@ -76,5 +99,5 @@
 			</div>
 		</div>
 	</section> <!--/#cart_items-->
-
+{% endif %}
 {% endblock %}

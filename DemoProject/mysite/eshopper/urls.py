@@ -1,6 +1,8 @@
-from django.urls import path,include
+from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+
+
 
 urlpatterns = [
     path('',views.index,name='eshopper'),
@@ -15,6 +17,8 @@ urlpatterns = [
     path('blog_single/',views.blog_single,name='blog_single'),
     path('checkout/',views.checkout,name='checkout'),
     path('product_detail/<int:id>/',views.product_details,name='product_details'),
+    path('wishlist/',views.wishlist,name='wishlist'),
+    path('wishlist/add/<int:id>/', views.wishlist_add, name='wishlist_add'),
 
     # urls for login and register
     path('register/',views.handle_register,name='register'),

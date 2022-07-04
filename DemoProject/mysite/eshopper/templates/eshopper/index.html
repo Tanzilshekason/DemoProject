@@ -94,7 +94,7 @@
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
 								<li><a href="{% url 'account' %}"><i class="fa fa-user"></i> Account</a></li>
-								<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
+								<li><a href="{% url 'wishlist' %}"><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="{% url 'checkout' %}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="{% url 'cart_detail' %}"><i class="fa fa-shopping-cart"></i> Cart
 								<span class="badge badge-secondary">{{request.session.cart|length}}</span></a></li>
@@ -205,14 +205,14 @@
 
 						</div>
 
-						<a href="{% static '#slider-carousel' %}" class="left control-carousel hidden-xs"
-						   data-slide="prev">
-							<i class="fa fa-angle-left"></i>
-						</a>
-						<a href="{% static '#slider-carousel' %}" class="right control-carousel hidden-xs"
-						   data-slide="next">
-							<i class="fa fa-angle-right"></i>
-						</a>
+<!--						<a href="{% static '#slider-carousel' %}" class="left control-carousel hidden-xs"-->
+<!--						   data-slide="prev">-->
+<!--							<i class="fa fa-angle-left"></i>-->
+<!--						</a>-->
+<!--						<a href="{% static '#slider-carousel' %}" class="right control-carousel hidden-xs"-->
+<!--						   data-slide="next">-->
+<!--							<i class="fa fa-angle-right"></i>-->
+<!--						</a>-->
 					</div>
 
 				</div>
@@ -313,6 +313,8 @@
 									<ul class="nav nav-pills nav-justified">
 										<li><a href="{% url 'product_details' prod.id %}"><i class="fa fa-plus-square">
 										</i>View Product</a></li>
+										<li><a href="{% url 'wishlist_add' prod.id %}" ><i class="fa fa-plus-square">
+										</i>Add to wishlist</a></li>
 									</ul>
 								</div>
 							</div>
