@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Userinfo, Userwishlist,Useraddress, Coupon,Couponsused,Cms
-from .models import Configuration, Contactus, Banners,Emailtemplate,Categorys,Subcategory,Brands
-from .models import Products,Productcategory,Productimages,Orderdetails,Paymentgateway
-from .models import Userorder,Productattributes,Productattributevalue,Productattributeassoc
+from .models import Userinfo, UserWishList,UserAddress, Coupon,CouponsUsed,Cms
+from .models import Configuration, Contactus, Banners,EmailTemplate,Categorys,Subcategory,Brands
+from .models import Products,ProductCategory,ProductImages,OrderDetails,PaymentGateway
+from .models import UserOrder,ProductAttributes,ProductAttributeValue,ProductAttributeAssoc
 from .models import User
-from .models import Manageuser,Userlogin,Userregister,Filterprices,Images
+from .models import ManageUser,UserLogin,UserRegister,Filterprices,Images
 
 admin.site.site_header = 'ADMINPANEL ADMIN'
 admin.site.site_title = 'ADMINPANEL ADMIN PORTAL'
@@ -22,21 +22,21 @@ class UserinfoAdminSite(admin.ModelAdmin):
 
 admin.site.register(Userinfo,UserinfoAdminSite)
 
-class UserwishlistAdminSite(admin.ModelAdmin):
-    model = Userwishlist
+class UserWishListAdminSite(admin.ModelAdmin):
+    model = UserWishList
     fields = ['user_id','product_id']
     list_display = ('user_id','product_id')
 
 
-admin.site.register(Userwishlist,UserwishlistAdminSite)
+admin.site.register(UserWishList,UserWishListAdminSite)
 
-class UseraddressAdminSite(admin.ModelAdmin):
-    model = Useraddress
+class UserAddressAdminSite(admin.ModelAdmin):
+    model = UserAddress
     fields = ['user_id','address1','address2','city','state','country','zipcode']
     list_display = ('user_id','address1','address2','city','state','country','zipcode')
 
 
-admin.site.register(Useraddress,UseraddressAdminSite)
+admin.site.register(UserAddress,UserAddressAdminSite)
 
 class CouponAdminSite(admin.ModelAdmin):
     model = Coupon
@@ -46,13 +46,13 @@ class CouponAdminSite(admin.ModelAdmin):
 
 admin.site.register(Coupon,CouponAdminSite)
 
-class CouponsusedAdminSite(admin.ModelAdmin):
-    model = Couponsused
+class CouponsUsedAdminSite(admin.ModelAdmin):
+    model = CouponsUsed
     fields = ['user_id','order_id','created_date','coupon_id']
     list_display = ('user_id','order_id','created_date','coupon_id')
 
 
-admin.site.register(Couponsused,CouponsusedAdminSite)
+admin.site.register(CouponsUsed,CouponsUsedAdminSite)
 
 class CmsAdminSite(admin.ModelAdmin):
     model = Cms
@@ -91,13 +91,13 @@ class BannersAdminSite(admin.ModelAdmin):
 admin.site.register(Banners,BannersAdminSite)
 
 
-class EmailtemplateAdminSite(admin.ModelAdmin):
-    model = Emailtemplate
+class EmailTemplateAdminSite(admin.ModelAdmin):
+    model = EmailTemplate
     fields = ['title','subject','content','created_by','created_date','modify_by','modify_date']
     list_display = ('title','subject','content','created_by','created_date','modify_by','modify_date')
 
 
-admin.site.register(Emailtemplate,EmailtemplateAdminSite)
+admin.site.register(EmailTemplate,EmailTemplateAdminSite)
 
 
 class CategorysAdminSite(admin.ModelAdmin):
@@ -107,14 +107,7 @@ class CategorysAdminSite(admin.ModelAdmin):
 
 
 admin.site.register(Categorys,CategorysAdminSite)
-
-
-class BrandsAdminSite(admin.ModelAdmin):
-    model = Brands
-    fields = ['name']
-
-
-admin.site.register(Brands,BrandsAdminSite)
+admin.site.register(Brands)
 
 
 class SubcategoryAdminSite(admin.ModelAdmin):
@@ -151,16 +144,16 @@ class ProductsInlineAdmin(admin.ModelAdmin):
 
 admin.site.register(Products,ProductsInlineAdmin)
 
-class ProductcategoryAdminSite(admin.ModelAdmin):
-    model = Productcategory
+class ProductCategoryAdminSite(admin.ModelAdmin):
+    model = ProductCategory
     fields = ['product_id','category_id']
     list_display = ('product_id','category_id')
 
 
-admin.site.register(Productcategory,ProductcategoryAdminSite)
+admin.site.register(ProductCategory,ProductCategoryAdminSite)
 
-class ProductimagesAdminSite(admin.ModelAdmin):
-    model = Productimages
+class ProductImagesAdminSite(admin.ModelAdmin):
+    model = ProductImages
     fields = ['image_name','status','created_by','created_date',
               'modify_by','modify_date','product_id','product_image','admin_photo']
     list_display = ('image_name','status','created_by','created_date',
@@ -168,27 +161,27 @@ class ProductimagesAdminSite(admin.ModelAdmin):
     readonly_fields = ('status','admin_photo')
 
 
-admin.site.register(Productimages,ProductimagesAdminSite)
+admin.site.register(ProductImages,ProductImagesAdminSite)
 
 
-class OrderdetailsAdminSite(admin.ModelAdmin):
-    model = Orderdetails
+class OrderDetailsAdminSite(admin.ModelAdmin):
+    model = OrderDetails
     fields = ['order_id','product_id','quantity','amount']
     list_display = ('order_id','product_id','quantity','amount')
 
 
-admin.site.register(Orderdetails,OrderdetailsAdminSite)
+admin.site.register(OrderDetails,OrderDetailsAdminSite)
 
-class PaymentgatewayAdminSite(admin.ModelAdmin):
-    model = Paymentgateway
+class PaymentGatewayAdminSite(admin.ModelAdmin):
+    model = PaymentGateway
     fields = ['name','created_by','created_date','modify_by','modify_date']
     list_display = ('name','created_by','created_date','modify_by','modify_date')
 
 
-admin.site.register(Paymentgateway,PaymentgatewayAdminSite)
+admin.site.register(PaymentGateway,PaymentGatewayAdminSite)
 
-class UserorderAdminSite(admin.ModelAdmin):
-    model = Userorder
+class UserOrderAdminSite(admin.ModelAdmin):
+    model = UserOrder
     fields = ['user_id','shipping_method','AWB_No','payment_gateway_id','transaction_id',
               'created_date','status','grand_total','shipping_charges','coupon_id','billing_address1',
               'billing_address2','billing_city','billing_state','billing_country','billing_zipcode',
@@ -201,56 +194,56 @@ class UserorderAdminSite(admin.ModelAdmin):
                     'shipping_zipcode')
 
 
-admin.site.register(Userorder,UserorderAdminSite)
+admin.site.register(UserOrder,UserOrderAdminSite)
 
 
-class ProductattributesAdminSite(admin.ModelAdmin):
-    model = Productattributes
+class ProductAttributesAdminSite(admin.ModelAdmin):
+    model = ProductAttributes
     fields = ['name','created_by','created_date','modified_by','modified_date']
     list_display = ('name','created_by','created_date','modified_by','modified_date')
 
 
-admin.site.register(Productattributes,ProductattributesAdminSite)
+admin.site.register(ProductAttributes,ProductAttributesAdminSite)
 
-class ProductattributevalueAdminSite(admin.ModelAdmin):
-    model = Productattributevalue
+class ProductAttributeValueAdminSite(admin.ModelAdmin):
+    model = ProductAttributeValue
     fields = ['product_attribute','attribute_value','created_by','created_date','modified_by','modified_date']
     list_display = ('product_attribute','attribute_value','created_by','created_date','modified_by','modified_date')
 
 
-admin.site.register(Productattributevalue,ProductattributevalueAdminSite)
+admin.site.register(ProductAttributeValue,ProductAttributeValueAdminSite)
 
-class ProductattributeassocAdminSite(admin.ModelAdmin):
-    model = Productattributeassoc
+class ProductAttributeAssocAdminSite(admin.ModelAdmin):
+    model = ProductAttributeAssoc
     fields = ['product_id','product_attribute_id','product_attribute_value_id']
     list_display = ('product_id','product_attribute_id','product_attribute_value_id')
 
 
-admin.site.register(Productattributeassoc,ProductattributeassocAdminSite)
+admin.site.register(ProductAttributeAssoc,ProductAttributeAssocAdminSite)
 
-class ManageuserAdminSite(admin.ModelAdmin):
-    model = Manageuser
+class ManageUserAdminSite(admin.ModelAdmin):
+    model = ManageUser
     fields = ['name','email','address','phone']
     list_display = ('name','email','address','phone')
 
 
-admin.site.register(Manageuser,ManageuserAdminSite)
+admin.site.register(ManageUser,ManageUserAdminSite)
 
-class UserloginAdminSite(admin.ModelAdmin):
-    model = Userlogin
+class UserLoginAdminSite(admin.ModelAdmin):
+    model = UserLogin
     fields = ['name','email']
     list_display = ('name','email')
 
 
-admin.site.register(Userlogin,UserloginAdminSite)
+admin.site.register(UserLogin,UserLoginAdminSite)
 
-class UserregisterAdminSite(admin.ModelAdmin):
-    model = Userregister
+class UserRegisterAdminSite(admin.ModelAdmin):
+    model = UserRegister
     fields = ['name','email','password']
     list_display = ('name','email','password')
 
 
-admin.site.register(Userregister,UserregisterAdminSite)
+admin.site.register(UserRegister,UserRegisterAdminSite)
 
 admin.site.register(Filterprices)
 

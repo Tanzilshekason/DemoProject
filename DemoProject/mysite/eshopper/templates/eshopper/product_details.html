@@ -38,7 +38,9 @@
 							<div class="brands-name">
 								<ul class="nav nav-pills nav-stacked">
 									{% for i in brand %}
-									<li><a href="/?brand={{i.id}}"> <span class="pull-right">(50)</span>{{i.name}}</a>
+									<li class="filter" data-filter="brand"><a href="/?brand={{i.id}}" >
+										<span class="pull-right">
+										(50)</span>{{i.name}}</a>
 									</li>
 									{% endfor %}
 								</ul>
@@ -92,7 +94,7 @@
 									<span>US ${{product.price}}</span>
 									<label>Quantity:</label>{{product.quantity}}
 									<a href="{% url 'cart_add' product.id %}" type="button"
-									   class="btn btn-fefault cart">
+									   class="btn btn-default addToCart" onclick="ajaxCall()">
 										<i class="fa fa-shopping-cart"></i>
 										Add to cart
 									</a>

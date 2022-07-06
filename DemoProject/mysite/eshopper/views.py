@@ -2,9 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login,logout
-from adminpanel.models import Categorys, Products, Brands, Contactus,Filterprices,Images
+from adminpanel.models import Categorys, Products, Brands, Contactus,Filterprices,Images,Subcategory
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
+# from wishlist import Wishlist
+from django.http import JsonResponse
+from django.views.generic import View
 # from django.contrib import messages
 
 User = get_user_model()
@@ -106,7 +109,7 @@ def wishlist(request):
 
 @login_required(login_url="/login/")
 def wishlist_add(request, id):
-    wishlist = Cart(request)
+    wishlist = Wishlist(request)
     product = Products.objects.get(id=id)
     wishlist.add(product=product)
     return redirect('wishlist')
@@ -217,5 +220,50 @@ def cart_clear(request):
 @login_required(login_url="/login/")
 def cart_detail(request):
     return render(request, 'eshopper/cart_detail.html')
+
+# class ProductListView(View):
+#     def get(request):
+#         # text = request.GET.get('button_text')
+#         #
+#         # if request.is_ajax():
+#         #     t = time()
+#         #     return JsonResponse({'seconds': t}, status=200)
+#
+#         category = request.GET.get('category')
+#         brand = request.GET.get('brand')
+#         startprice = request.GET.get('filter_price')
+#         endprice = request.GET.get('filter_price')
+#
+#
+#         return render(request,'eshopper/index.html')
+
+
+class ProductListView(View):
+    def get(self,request):
+        category = request.GET.get('category')
+        brand = request.GET.get('brand')
+        startprice = request.GET.get('price_filter')
+        endprice = request.GET.get('price_filter')
+
+        product_queryset = Products.objects.all()
+        if category:
+            sub_category = Subcategory.objects.filter(name=category).first()
+            product_queryset = product_queryset.filter(sub_category=sub_category)
+        if brand:
+            brand = Brands.objects.filter(name=brand).first()
+            product_queryset = product_queryset.filter(brand=brand)
+        if startprice:
+            product_queryset = product_queryset.filter(price__gte=int(startprice))
+        if endprice:
+            product_queryset = product_queryset.filter(price__lte=int(endprice))
+
+        product_list = list(product_queryset.values())
+        print(product_list)
+        context = {
+            'products': product_list
+        }
+        return JsonResponse(context,safe=False)
+
+
 
 

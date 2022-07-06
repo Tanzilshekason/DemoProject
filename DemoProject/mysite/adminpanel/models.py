@@ -25,7 +25,7 @@ class Userinfo(models.Model):
         verbose_name_plural = 'userinfo'
 
 
-class Userwishlist(models.Model):
+class UserWishList(models.Model):
     user_id = models.ForeignKey(Userinfo, on_delete=models.CASCADE)
     product_id = models.CharField(max_length=100)
 
@@ -37,7 +37,7 @@ class Userwishlist(models.Model):
         verbose_name_plural = 'user wish list'
 
 
-class Useraddress(models.Model):
+class UserAddress(models.Model):
     user_id = models.ForeignKey(Userinfo, on_delete=models.CASCADE)
     address1 = models.CharField(max_length=100)
     address2 = models.CharField(max_length=100)
@@ -50,8 +50,8 @@ class Useraddress(models.Model):
         return self.user_id
 
     class Meta:
-        verbose_name = 'user address'
-        verbose_name_plural = 'user address'
+        verbose_name = 'user Address'
+        verbose_name_plural = 'user Address'
 
 
 class Coupon(models.Model):
@@ -71,15 +71,15 @@ class Coupon(models.Model):
         verbose_name_plural = 'coupon'
 
 
-class Couponsused(models.Model):
+class CouponsUsed(models.Model):
     user_id = models.IntegerField()
     order_id = models.IntegerField()
     created_date = models.DateField()
     coupon_id = models.ForeignKey(Coupon, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = 'couponused'
-        verbose_name_plural = 'couponused'
+        verbose_name = 'coupon Used'
+        verbose_name_plural = 'coupon Used'
 
 
 class Cms(models.Model):
@@ -160,7 +160,7 @@ class Banners(models.Model):
     admin_photo.allow_tags = True
 
 
-class Emailtemplate(models.Model):
+class EmailTemplate(models.Model):
     title = models.CharField(max_length=45)
     subject = models.CharField(max_length=255)
     content = models.TextField()
@@ -232,7 +232,7 @@ class Products(models.Model):
 
     category = models.ForeignKey(Categorys,on_delete=models.CASCADE,null=False,default='')
     sub_category = models.ForeignKey(Subcategory,on_delete=models.CASCADE,null=False,default='')
-    brand = models.ForeignKey(Brands,on_delete=models.CASCADE,null=True)
+    brand = models.ForeignKey(Brands,on_delete=models.CASCADE,null=False,default='')
     name = models.CharField(max_length=100,)
     sku = models.CharField(max_length=45)
     shor_description = models.CharField(max_length=100)
@@ -253,7 +253,7 @@ class Products(models.Model):
     modify_date = models.DateField()
     is_featured = models.BooleanField(default=True)
     image = models.ImageField(upload_to='media/photos')
-    filter_price = models.ForeignKey(Filterprices,on_delete=models.CASCADE)
+    filter_price = models.ForeignKey(Filterprices,on_delete=models.CASCADE,null=False,default='')
     Availability = models.CharField(choices=Availability,null=True,max_length=100)
 
 
@@ -294,16 +294,16 @@ class Images(models.Model):
     admin_photo.allow_tags = True
 
 
-class Productcategory(models.Model):
+class ProductCategory(models.Model):
     product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Categorys, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = 'product category'
-        verbose_name_plural = 'product category'
+        verbose_name = 'product Category'
+        verbose_name_plural = 'product Category'
 
 
-class Productimages(models.Model):
+class ProductImages(models.Model):
     image_name = models.CharField(max_length=100)
     status = models.BooleanField(default=True)
     created_by = models.IntegerField()
@@ -317,8 +317,8 @@ class Productimages(models.Model):
         return self.image_name
 
     class Meta:
-        verbose_name = 'Product images'
-        verbose_name_plural = 'Product images'
+        verbose_name = 'Product Images'
+        verbose_name_plural = 'Product Images'
 
     @property
     def short_description(self):
@@ -331,18 +331,18 @@ class Productimages(models.Model):
     admin_photo.allow_tags = True
 
 
-class Orderdetails(models.Model):
+class OrderDetails(models.Model):
     order_id = models.IntegerField()
     product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     amount = models.FloatField()
 
     class Meta:
-        verbose_name = 'order details'
-        verbose_name_plural = 'order details'
+        verbose_name = 'order Details'
+        verbose_name_plural = 'order Details'
 
 
-class Paymentgateway(models.Model):
+class PaymentGateway(models.Model):
     name = models.CharField(max_length=45)
     created_by = models.IntegerField()
     created_date = models.DateField()
@@ -353,15 +353,15 @@ class Paymentgateway(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'payment gateway'
-        verbose_name_plural = 'payment gateway'
+        verbose_name = 'payment Gateway'
+        verbose_name_plural = 'payment Gateway'
 
 
-class Userorder(models.Model):
+class UserOrder(models.Model):
     user_id = models.ForeignKey(Userinfo, on_delete=models.CASCADE)
     shipping_method = models.IntegerField()
     AWB_No = models.CharField(max_length=100)
-    payment_gateway_id = models.ForeignKey(Paymentgateway, on_delete=models.CASCADE)
+    payment_gateway_id = models.ForeignKey(PaymentGateway, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100)
     created_date = models.DateField()
     status = models.IntegerField()
@@ -385,12 +385,12 @@ class Userorder(models.Model):
         return self.billing_address1
 
     class Meta:
-        verbose_name = 'userorder'
-        verbose_name_plural = 'userorder'
+        verbose_name = 'user Order'
+        verbose_name_plural = 'user Order'
 
 
 
-class Productattributes(models.Model):
+class ProductAttributes(models.Model):
     name = models.CharField(max_length=45)
     created_by = models.IntegerField()
     created_date = models.DateField()
@@ -401,13 +401,13 @@ class Productattributes(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'product attributes'
-        verbose_name_plural = 'product attributes'
+        verbose_name = 'product Attributes'
+        verbose_name_plural = 'product Attributes'
 
 
 
-class Productattributevalue(models.Model):
-    product_attribute = models.ForeignKey(Productattributes, on_delete=models.CASCADE)
+class ProductAttributeValue(models.Model):
+    product_attribute = models.ForeignKey(ProductAttributes, on_delete=models.CASCADE)
     attribute_value = models.CharField(max_length=45)
     created_by = models.IntegerField()
     created_date = models.DateField()
@@ -418,19 +418,19 @@ class Productattributevalue(models.Model):
         return self.attribute_value
 
     class Meta:
-        verbose_name = 'product attribute value'
-        verbose_name_plural = 'product attribute value'
+        verbose_name = 'product Attribute Value'
+        verbose_name_plural = 'product Attribute Value'
 
 
 
-class Productattributeassoc(models.Model):
+class ProductAttributeAssoc(models.Model):
     product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
-    product_attribute_id = models.ForeignKey(Productattributes, on_delete=models.CASCADE)
+    product_attribute_id = models.ForeignKey(ProductAttributes, on_delete=models.CASCADE)
     product_attribute_value_id = models.IntegerField()
 
     class Meta:
-        verbose_name = 'product attribute assoc'
-        verbose_name_plural = 'product attribute assoc'
+        verbose_name = 'product Attribute Assoc'
+        verbose_name_plural = 'product Attribute Assoc'
 
 # Model for USER
 class User(AbstractUser):
@@ -440,7 +440,7 @@ class User(AbstractUser):
 
 
 # Model for CRUD operations
-class Manageuser(models.Model):
+class ManageUser(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField(max_length=100,unique=True)
     address = models.TextField()
@@ -450,10 +450,10 @@ class Manageuser(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'manage user'
-        verbose_name_plural = 'manage user'
+        verbose_name = 'manage User'
+        verbose_name_plural = 'manage User'
 
-class Userlogin(models.Model):
+class UserLogin(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100,unique=True)
 
@@ -461,10 +461,10 @@ class Userlogin(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'User login'
-        verbose_name_plural = 'User login'
+        verbose_name = 'User Login'
+        verbose_name_plural = 'User Login'
 
-class Userregister(models.Model):
+class UserRegister(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100,unique=True)
     password = models.CharField(max_length=25)
@@ -473,8 +473,8 @@ class Userregister(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'User register'
-        verbose_name_plural = 'User register'
+        verbose_name = 'User Register'
+        verbose_name_plural = 'User Register'
 
 
 # class order(models.Model):

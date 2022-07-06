@@ -1,8 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
-
-
+from .views import ProductListView
 
 urlpatterns = [
     path('',views.index,name='eshopper'),
@@ -40,5 +39,7 @@ urlpatterns = [
     path('cart/item_decrement/<int:id>/',views.item_decrement, name='item_decrement'),
     path('cart/cart_clear/', views.cart_clear, name='cart_clear'),
     path('cart/cart-detail/',views.cart_detail,name='cart_detail'),
+
+    path('product_list/',ProductListView.as_view(),name='product_list'),
 ]
 
