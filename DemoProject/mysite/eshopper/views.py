@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login,logout
-from adminpanel.models import Categorys, Products, Brands, Contactus,Filterprices,Images,Subcategory
+from adminpanel.models import Categorys, Products, Brands, Contactus,FilterPrices,Images,Subcategory
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 # from wishlist import Wishlist
@@ -16,7 +16,7 @@ User = get_user_model()
 def index(request):
     category = Categorys.objects.all()
     brand = Brands.objects.all()
-    filter_price = Filterprices.objects.all()
+    filter_price = FilterPrices.objects.all()
     brandId = request.GET.get('brand')
     categoryID = request.GET.get('category')
     PRICE_FILTER_ID = request.GET.get('filter_price')
@@ -220,22 +220,6 @@ def cart_clear(request):
 @login_required(login_url="/login/")
 def cart_detail(request):
     return render(request, 'eshopper/cart_detail.html')
-
-# class ProductListView(View):
-#     def get(request):
-#         # text = request.GET.get('button_text')
-#         #
-#         # if request.is_ajax():
-#         #     t = time()
-#         #     return JsonResponse({'seconds': t}, status=200)
-#
-#         category = request.GET.get('category')
-#         brand = request.GET.get('brand')
-#         startprice = request.GET.get('filter_price')
-#         endprice = request.GET.get('filter_price')
-#
-#
-#         return render(request,'eshopper/index.html')
 
 
 class ProductListView(View):

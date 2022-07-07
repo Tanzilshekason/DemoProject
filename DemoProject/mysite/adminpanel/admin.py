@@ -4,7 +4,7 @@ from .models import Configuration, Contactus, Banners,EmailTemplate,Categorys,Su
 from .models import Products,ProductCategory,ProductImages,OrderDetails,PaymentGateway
 from .models import UserOrder,ProductAttributes,ProductAttributeValue,ProductAttributeAssoc
 from .models import User
-from .models import ManageUser,UserLogin,UserRegister,Filterprices,Images
+from .models import ManageUser,UserLogin,UserRegister,FilterPrices,Images
 
 admin.site.site_header = 'ADMINPANEL ADMIN'
 admin.site.site_title = 'ADMINPANEL ADMIN PORTAL'
@@ -245,7 +245,7 @@ class UserRegisterAdminSite(admin.ModelAdmin):
 
 admin.site.register(UserRegister,UserRegisterAdminSite)
 
-admin.site.register(Filterprices)
+admin.site.register(FilterPrices)
 
 
 

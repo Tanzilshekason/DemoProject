@@ -214,7 +214,7 @@ class Brands(models.Model):
         verbose_name_plural = 'brands'
 
 
-class Filterprices(models.Model):
+class FilterPrices(models.Model):
     FILTER_PRICE = (
         ('100 TO 199','100 TO 199'),
         ('200 TO 299','200 TO 299'),
@@ -253,7 +253,7 @@ class Products(models.Model):
     modify_date = models.DateField()
     is_featured = models.BooleanField(default=True)
     image = models.ImageField(upload_to='media/photos')
-    filter_price = models.ForeignKey(Filterprices,on_delete=models.CASCADE,null=False,default='')
+    filter_price = models.ForeignKey(FilterPrices,on_delete=models.CASCADE,null=False,default='')
     Availability = models.CharField(choices=Availability,null=True,max_length=100)
 
 

@@ -263,14 +263,12 @@
 
 						</div><!--/brands_products-->
 
-						<div class="slider-widget mt-8"><!--price-range-->
-							<h2 class="sidebar-title">Price Filter</h2>
-							<div class="price-filter">
-								<div class="price-slider-amount">
-									{% for f_price in filter_price %}
-									<li class="selected m-0 price" >{{f_price.price}}</li>
-									{% endfor %}
-								</div>
+						<div class="price-range"><!--price-range-->
+							<h2>Price Range</h2>
+							<div class="well text-center">
+								 <input type="text" class="span2 price-slider" value="" data-slider-min="0"
+										data-slider-max="3000" data-slider-step="50" data-slider-value="[250, 1000]" id="sl2" ><br />
+								 <b class="pull-left">$ 0</b> <b class="pull-right">$ 3000</b>
 							</div>
 						</div><!--/price-range-->
 
@@ -283,44 +281,40 @@
 
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
-						<h2 class="title text-center">Features Items</h2>
-						{% for prod in product %}
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-										<div class="productinfo text-center">
-											<img src="{{prod.image.url}}" alt="" height="200px" />
-											<h2>${{prod.price}}</h2>
-											<p>{{prod.name}}</p>
-											<a href="{% url 'cart_add' prod.id %}" class="btn btn-success add-to-cart">
-												<i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-										<div class="product-overlay">
-											<a href="{% url 'product_details' prod.id %}">
-											<div class="overlay-content">
-												 <h2>${{prod.price}}</h2>
-													<p>{{prod.name}}</p>
-												<a href="{% url 'cart_add' prod.id %}"
-												   class="btn btn-default add-to-cart">
-													<i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-											</a>
-										</div>
-								</div>
-								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="{% url 'product_details' prod.id %}"><i class="fa fa-plus-square">
-										</i>View Product</a></li>
-										<li><a href="{% url 'wishlist_add' prod.id %}" ><i class="fa fa-plus-square">
-										</i>Add to wishlist</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						{% endfor %}
-
-
-
+<!--						{% for prod in product %}-->
+<!--						<div class="col-sm-4">-->
+<!--							<div class="product-image-wrapper">-->
+<!--								<div class="single-products">-->
+<!--										<div class="productinfo text-center">-->
+<!--											<img src="{{prod.image.url}}" alt="" height="200px" />-->
+<!--											<h2>${{prod.price}}</h2>-->
+<!--											<p>{{prod.name}}</p>-->
+<!--											<a href="{% url 'cart_add' prod.id %}" class="btn btn-success add-to-cart">-->
+<!--												<i class="fa fa-shopping-cart"></i>Add to cart</a>-->
+<!--										</div>-->
+<!--										<div class="product-overlay">-->
+<!--											<a href="{% url 'product_details' prod.id %}">-->
+<!--											<div class="overlay-content">-->
+<!--												 <h2>${{prod.price}}</h2>-->
+<!--													<p>{{prod.name}}</p>-->
+<!--												<a href="{% url 'cart_add' prod.id %}"-->
+<!--												   class="btn btn-default add-to-cart">-->
+<!--													<i class="fa fa-shopping-cart"></i>Add to cart</a>-->
+<!--											</div>-->
+<!--											</a>-->
+<!--										</div>-->
+<!--								</div>-->
+<!--								<div class="choose">-->
+<!--									<ul class="nav nav-pills nav-justified">-->
+<!--										<li><a href="{% url 'product_details' prod.id %}"><i class="fa fa-plus-square">-->
+<!--										</i>View Product</a></li>-->
+<!--										<li><a href="{% url 'wishlist_add' prod.id %}" ><i class="fa fa-plus-square">-->
+<!--										</i>Add to wishlist</a></li>-->
+<!--									</ul>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						{% endfor %}-->
 					</div><!--features_items-->
 
 
@@ -513,15 +507,47 @@
 			getProductListAjax(category='', brand=brand, startprice='', endprice='')
     	})
 
-    	$('.price').on('click',function(){
-    		var startprice = $(this).text()
-			getProductListAjax(category='', brand='',startprice=startprice, endprice='')
+    	$('.price-slider').on('input change',function(){
+    		var current = $(this)
+    		console.log(current)
     	})
 
-<!--    	$('.price').on('click',function(){-->
-<!--    		var endprice = $(this).text()-->
-<!--			getProductListAjax(category='', brand='',startprice='', endprice=endprice)-->
-<!--    	})-->
+    	$('.price-slider').on('input change',function(){
+    		let current = $(this)
+    		console.log(current)
+    	})
+
+		$(document).on('click', '.add-to-cart', function(){
+<!--    	$('.add-to-cart').on('click',function(){-->
+			const button = document.querySelector(".add-to-cart");
+			const done = document.querySelector(".done");
+			console.log(button);
+			console.log(done);
+			let added = false;
+
+			$.ajax({
+				url: "http://127.0.0.1:8000/cart/cart_add/",
+				type: 'GET',
+        		data:{
+        			id:$(this).val(),
+        		},
+
+
+
+
+
+				});
+
+
+
+    	})
+
+
+
+
+
+    	getProductListAjax()
+
 	});
 
 
@@ -542,26 +568,24 @@
 											<img src="`+ window.location.origin + `/media/` +  prod['image'] + `" alt="" height="200px" />
 											<h2>$` + prod.price + `</h2>
 											<p>` + prod.name + `</p>
-											<a href="#" class="btn btn-success add-to-cart">
-												<i class="fa fa-shopping-cart"></i>Add to cart</a>
+											<button class="btn btn-success add-to-cart" data-prod-id="` + prod.id + `" id="button1">
+												<i class="fa fa-shopping-cart"></i>Add to cart</button>
 										</div>
 										<div class="product-overlay">
-											<a href="#">
+<!--											<a href="/product_detail/`+ prod['id'] +`">-->
 											<div class="overlay-content">
 												 <h2>$ ` + prod.price + `</h2>
 													<p>` + prod.name + `</p>
-												<a href="#"
-												   class="btn btn-default add-to-cart">
-													<i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-											</a>
+												<button class="btn btn-default add-to-cart" data-prod-id="` + prod.id + `" id="button1">
+													<i class="fa fa-shopping-cart"></i>Add to cart</button>
+											</div></a>
 										</div>
 								</div>
 								<div class="choose">
 									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square">
+										<li><a href="/product_detail/`+ prod['id'] +`"><i class="fa fa-plus-square">
 										</i>View Product</a></li>
-										<li><a href="#" ><i class="fa fa-plus-square">
+										<li><a href="/wishlist/`+ prod['id'] + `"><i class="fa fa-plus-square">
 										</i>Add to wishlist</a></li>
 									</ul>
 								</div>
