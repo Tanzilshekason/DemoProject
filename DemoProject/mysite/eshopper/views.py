@@ -84,6 +84,8 @@ def blog_single(request):
 
 
 def checkout(request):
+
+
     return render(request,'eshopper/checkout.html')
 
 

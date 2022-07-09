@@ -126,3 +126,20 @@ Product attribute assoc in Product_attribute_assoc table --
 
 #### 1 July
 ** Checkout **
+-- Doing Checkout in demo Project --
+
+#### 4 July
+** Checkout **
+-- Doing Checkout in demo Project --
+
+#### 5 July
+** AJAX for filters **
+-- Doing Ajax for category, brands and price filter --
+
+#### 6 July
+** Ajax for Add to cart **
+-- Doing ajax for add to cart --
+
+#### 7 July
+** Contact Us **
+-- Doing contact us in demo project --

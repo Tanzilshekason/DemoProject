@@ -499,50 +499,44 @@
     	$('.subcategory').on('click', function(){
     		var category = $(this).text()
 			getProductListAjax(category=category, brand='', startprice='', endprice='')
-    	})
+    	});
 
 
 		$('.brand').on('click',function(){
     		var brand = $(this).text()
 			getProductListAjax(category='', brand=brand, startprice='', endprice='')
-    	})
+    	});
 
     	$('.price-slider').on('input change',function(){
     		var current = $(this)
     		console.log(current)
-    	})
+    	});
 
     	$('.price-slider').on('input change',function(){
     		let current = $(this)
     		console.log(current)
-    	})
+    	});
+
 
 		$(document).on('click', '.add-to-cart', function(){
-<!--    	$('.add-to-cart').on('click',function(){-->
 			const button = document.querySelector(".add-to-cart");
 			const done = document.querySelector(".done");
 			console.log(button);
 			console.log(done);
-			let added = false;
+            id = $(this).attr('data-prod-id')
+            	data = {
+                	id:id
+            	}
 
-			$.ajax({
-				url: "http://127.0.0.1:8000/cart/cart_add/",
-				type: 'GET',
-        		data:{
-        			id:$(this).val(),
-        		},
-
-
-
-
-
-				});
-
-
-
-    	})
-
-
+            $.ajax({
+                type: 'GET',
+                url: "http://127.0.0.1:8000/cart/cart_add/",
+                data: data,
+                success: function(data){
+                    console.log('success')
+                }
+            });
+        });
 
 
 
@@ -568,7 +562,7 @@
 											<img src="`+ window.location.origin + `/media/` +  prod['image'] + `" alt="" height="200px" />
 											<h2>$` + prod.price + `</h2>
 											<p>` + prod.name + `</p>
-											<button class="btn btn-success add-to-cart" data-prod-id="` + prod.id + `" id="button1">
+											<button class="btn btn-success add-to-cart" data-prod-id="` + prod.id + `" id="button">
 												<i class="fa fa-shopping-cart"></i>Add to cart</button>
 										</div>
 										<div class="product-overlay">
@@ -576,7 +570,7 @@
 											<div class="overlay-content">
 												 <h2>$ ` + prod.price + `</h2>
 													<p>` + prod.name + `</p>
-												<button class="btn btn-default add-to-cart" data-prod-id="` + prod.id + `" id="button1">
+												<button class="btn btn-default add-to-cart" data-prod-id="` + prod.id + `" id="button">
 													<i class="fa fa-shopping-cart"></i>Add to cart</button>
 											</div></a>
 										</div>
@@ -585,7 +579,7 @@
 									<ul class="nav nav-pills nav-justified">
 										<li><a href="/product_detail/`+ prod['id'] +`"><i class="fa fa-plus-square">
 										</i>View Product</a></li>
-										<li><a href="/wishlist/`+ prod['id'] + `"><i class="fa fa-plus-square">
+										<li><a href="/wishlist/"><i class="fa fa-plus-square">
 										</i>Add to wishlist</a></li>
 									</ul>
 								</div>

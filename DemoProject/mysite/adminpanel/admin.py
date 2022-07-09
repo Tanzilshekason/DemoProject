@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Userinfo, UserWishList,UserAddress, Coupon,CouponsUsed,Cms
 from .models import Configuration, Contactus, Banners,EmailTemplate,Categorys,Subcategory,Brands
-from .models import Products,ProductCategory,ProductImages,OrderDetails,PaymentGateway
+from .models import Products,ProductCategory,ProductImages,OrderDetails,PaymentGateway,Order
 from .models import UserOrder,ProductAttributes,ProductAttributeValue,ProductAttributeAssoc
 from .models import User
 from .models import ManageUser,UserLogin,UserRegister,FilterPrices,Images
@@ -246,6 +246,7 @@ class UserRegisterAdminSite(admin.ModelAdmin):
 admin.site.register(UserRegister,UserRegisterAdminSite)
 
 admin.site.register(FilterPrices)
+admin.site.register(Order)
 
 
 

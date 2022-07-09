@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.template.defaultfilters import truncatechars
 from django.utils.safestring import mark_safe
-
+import datetime
 # Create your models here.
 
 class Userinfo(models.Model):
@@ -477,10 +477,18 @@ class UserRegister(models.Model):
         verbose_name_plural = 'User Register'
 
 
-# class order(models.Model):
-#     image = models.ImageField(upload_to='media/order/image')
-#     product = models.ForeignKey(products, on_delete=models.CASCADE)
-#     user = models.ForeignKey(user,on_delete=models.CASCADE)
-#     quantity = models.CharField(max_length=5)
-#     price = models.IntegerField()
+class Order(models.Model):
+    image = models.ImageField(upload_to='media/order/image')
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    quantity = models.CharField(max_length=5)
+    price = models.IntegerField()
+    address = models.TextField()
+    phone = models.CharField(max_length=10)
+    pincode = models.CharField(max_length=10)
+    date = models.DateField(default=datetime.datetime.today)
+
+    def __str__(self):
+        return self.product.name
+
 
