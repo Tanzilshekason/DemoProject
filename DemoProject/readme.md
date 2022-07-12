@@ -143,3 +143,10 @@ Product attribute assoc in Product_attribute_assoc table --
 #### 7 July
 ** Contact Us **
 -- Doing contact us in demo project --
+
+#### 8 July
+** 
+--
+
+#### 12 July 
+** Ajax For Cart session **

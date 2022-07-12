@@ -237,7 +237,7 @@ class Products(models.Model):
     sku = models.CharField(max_length=45)
     shor_description = models.CharField(max_length=100)
     long_description = models.TextField()
-    price = models.FloatField()
+    price = models.CharField(max_length=10000)
     special_price = models.FloatField()
     special_price_from = models.DateField()
     special_price_to = models.DateField()
@@ -479,16 +479,19 @@ class UserRegister(models.Model):
 
 class Order(models.Model):
     image = models.ImageField(upload_to='media/order/image')
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    product = models.CharField(max_length=1000,default='')
     user = models.ForeignKey(User,on_delete=models.CASCADE)
+    price = models.CharField(max_length=10000)
     quantity = models.CharField(max_length=5)
-    price = models.IntegerField()
+    total = models.CharField(max_length=1000,default='')
     address = models.TextField()
     phone = models.CharField(max_length=10)
     pincode = models.CharField(max_length=10)
     date = models.DateField(default=datetime.datetime.today)
 
     def __str__(self):
-        return self.product.name
+        return self.product
 
-
+    class Meta:
+        verbose_name = 'Order'
+        verbose_name_plural = 'Order'

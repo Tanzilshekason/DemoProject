@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login,logout
-from adminpanel.models import Categorys, Products, Brands, Contactus,FilterPrices,Images,Subcategory
+from adminpanel.models import Categorys, Products, Brands, Contactus,FilterPrices,Images,Subcategory,Order
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
-# from wishlist import Wishlist
+from wishlist import Wishlist
 from django.http import JsonResponse
 from django.views.generic import View
 # from django.contrib import messages
@@ -84,9 +84,51 @@ def blog_single(request):
 
 
 def checkout(request):
+    if request.method == "POST":
+        address = request.POST.get('address')
+        phone = request.POST.get('phone')
+        pincode = request.POST.get('pincode')
+        cart = request.session.get('cart')
+        uid = request.session.get('_auth_user_id')
+        user = User.objects.get(pk=uid)
+        print(cart)
 
+        print(address,phone,pincode,cart,user)
+        for i in cart:
+            a = (int(cart[i]['price']))
+            b = cart[i]['quantity']
+            total = a * b
 
-    return render(request,'eshopper/checkout.html')
+            order = Order(
+                user=user,
+                product=cart[i]['name'],
+                price=cart[i]['price'],
+                quantity=cart[i]['quantity'],
+                image=cart[i]['image'],
+                address=address,
+                phone=phone,
+                pincode=pincode,
+                total=total,
+            )
+            order.save()
+        request.session['cart'] = {}
+        return redirect('eshopper')
+
+    return HttpResponse("this is checkout page")
+
+def check(request):
+    return render(request,'checkout.html')
+
+def your_order(request):
+    uid = request.session.get('_auth_user_id')
+    user = User.objects.get(pk=uid)
+
+    order = Order.objects.filter(user=user)
+    context = {
+        'order':order,
+    }
+
+    return render(request,'order.html',context)
 
 
 def product_details(request,id):
@@ -250,6 +292,23 @@ class ProductListView(View):
         }
         return JsonResponse(context,safe=False)
 
+class CartView(View):
+    def get(self,request):
+        product = request.GET.get('product')
+
+        product_queryset = Products.objects.all()
+
+        if product:
+            product = Products.objects.filter(name=product).first()
+            product_queryset = product_queryset.filter(product=product)
+
+        cart_list = list(product_queryset.values())
+        print(cart_list)
+        context = {
+            'products': cart_list
+        }
+
+        return JsonResponse(context,safe=False)
 
 
 

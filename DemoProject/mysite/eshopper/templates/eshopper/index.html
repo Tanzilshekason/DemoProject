@@ -95,7 +95,8 @@
 							<ul class="nav navbar-nav">
 								<li><a href="{% url 'account' %}"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href="{% url 'wishlist' %}"><i class="fa fa-star"></i> Wishlist</a></li>
-								<li><a href="{% url 'checkout' %}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+								<li><a href="{% url 'order' %}"><i class="fa fa-star"></i> Your Order</a></li>
+								<li><a href="{% url 'check' %}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="{% url 'cart_detail' %}"><i class="fa fa-shopping-cart"></i> Cart
 								<span class="badge badge-secondary">{{request.session.cart|length}}</span></a></li>
 								{% if user.is_authenticated %}
@@ -270,6 +271,7 @@
 										data-slider-max="3000" data-slider-step="50" data-slider-value="[250, 1000]" id="sl2" ><br />
 								 <b class="pull-left">$ 0</b> <b class="pull-right">$ 3000</b>
 							</div>
+
 						</div><!--/price-range-->
 
 						<div class="shipping text-center"><!--shipping-->
@@ -522,7 +524,7 @@
 			const button = document.querySelector(".add-to-cart");
 			const done = document.querySelector(".done");
 			console.log(button);
-			console.log(done);
+<!--			console.log(done);-->
             id = $(this).attr('data-prod-id')
             	data = {
                 	id:id
@@ -530,7 +532,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: "http://127.0.0.1:8000/cart/cart_add/",
+                url: "http://127.0.0.1:8000/cart/cart-detail/",
                 data: data,
                 success: function(data){
                     console.log('success')
@@ -541,6 +543,12 @@
 
 
     	getProductListAjax()
+
+<!--		$('.add-to-cart').on('click', function(){-->
+<!--				var product = $(this).text()-->
+<!--				getCartAjax(product=product)-->
+<!--    		});-->
+<!--    	getCartAjax()-->
 
 	});
 
@@ -597,9 +605,7 @@
     		//
     	}
 
-
-
-	</script>
+</script>
 
 </body>
 </html>

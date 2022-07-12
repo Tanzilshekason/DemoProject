@@ -15,6 +15,8 @@ urlpatterns = [
     path('blog/',views.blog,name='blog'),
     path('blog_single/',views.blog_single,name='blog_single'),
     path('checkout/',views.checkout,name='checkout'),
+    path('check/', views.check, name='check'),
+    path('order/',views.your_order,name='order'),
     path('product_detail/<int:id>/',views.product_details,name='product_details'),
     path('wishlist/',views.wishlist,name='wishlist'),
     path('wishlist/add/<int:id>/', views.wishlist_add, name='wishlist_add'),
@@ -33,7 +35,7 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(),name='password_reset_complete'),
 
     # add to  cart urls
-    path('cart/add/<int:id>/', views.cart_add, name='cart_add'),
+    path('cart/cart_add/<int:id>/', views.cart_add, name='cart_add'),
     path('cart/item_clear/<int:id>/', views.item_clear, name='item_clear'),
     path('cart/item_increment/<int:id>/',views.item_increment, name='item_increment'),
     path('cart/item_decrement/<int:id>/',views.item_decrement, name='item_decrement'),
