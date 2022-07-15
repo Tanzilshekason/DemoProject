@@ -96,9 +96,9 @@
 								<li><a href="{% url 'account' %}"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href="{% url 'wishlist' %}"><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="{% url 'order' %}"><i class="fa fa-star"></i> Your Order</a></li>
-								<li><a href="{% url 'check' %}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+								<li><a href="{% url 'checkout' %}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="{% url 'cart_detail' %}"><i class="fa fa-shopping-cart"></i> Cart
-								<span class="badge badge-secondary">{{request.session.cart|length}}</span></a></li>
+							<span id="cart-increment"><span class="badge badge-secondary cart_count">{{request.session.cart|length}}</span></span></a></li>
 								{% if user.is_authenticated %}
 								<li><a href="{% url 'logout' %}">Logout</a></li>
 								{% else %}
@@ -283,40 +283,7 @@
 
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
-<!--						{% for prod in product %}-->
-<!--						<div class="col-sm-4">-->
-<!--							<div class="product-image-wrapper">-->
-<!--								<div class="single-products">-->
-<!--										<div class="productinfo text-center">-->
-<!--											<img src="{{prod.image.url}}" alt="" height="200px" />-->
-<!--											<h2>${{prod.price}}</h2>-->
-<!--											<p>{{prod.name}}</p>-->
-<!--											<a href="{% url 'cart_add' prod.id %}" class="btn btn-success add-to-cart">-->
-<!--												<i class="fa fa-shopping-cart"></i>Add to cart</a>-->
-<!--										</div>-->
-<!--										<div class="product-overlay">-->
-<!--											<a href="{% url 'product_details' prod.id %}">-->
-<!--											<div class="overlay-content">-->
-<!--												 <h2>${{prod.price}}</h2>-->
-<!--													<p>{{prod.name}}</p>-->
-<!--												<a href="{% url 'cart_add' prod.id %}"-->
-<!--												   class="btn btn-default add-to-cart">-->
-<!--													<i class="fa fa-shopping-cart"></i>Add to cart</a>-->
-<!--											</div>-->
-<!--											</a>-->
-<!--										</div>-->
-<!--								</div>-->
-<!--								<div class="choose">-->
-<!--									<ul class="nav nav-pills nav-justified">-->
-<!--										<li><a href="{% url 'product_details' prod.id %}"><i class="fa fa-plus-square">-->
-<!--										</i>View Product</a></li>-->
-<!--										<li><a href="{% url 'wishlist_add' prod.id %}" ><i class="fa fa-plus-square">-->
-<!--										</i>Add to wishlist</a></li>-->
-<!--									</ul>-->
-<!--								</div>-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						{% endfor %}-->
+
 					</div><!--features_items-->
 
 
@@ -497,6 +464,8 @@
 	<script src="{% static 'js/cart.js' %}"></script>
 
 	<script>
+
+
 	$(document).ready(function(){
     	$('.subcategory').on('click', function(){
     		var category = $(this).text()
@@ -526,19 +495,18 @@
 			console.log(button);
 <!--			console.log(done);-->
             id = $(this).attr('data-prod-id')
-            	data = {
-                	id:id
-            	}
-
             $.ajax({
                 type: 'GET',
-                url: "http://127.0.0.1:8000/cart/cart-detail/",
-                data: data,
+                url: "http://127.0.0.1:8000/cart/cart_add/" + id,
                 success: function(data){
+					$('.cart_count').empty();
+					$('.cart_count').append(data['cart_count']);
                     console.log('success')
                 }
             });
+
         });
+
 
 
 
@@ -574,13 +542,13 @@
 												<i class="fa fa-shopping-cart"></i>Add to cart</button>
 										</div>
 										<div class="product-overlay">
-<!--											<a href="/product_detail/`+ prod['id'] +`">-->
+											<a href="/product_detail/`+ prod['id'] +`">
 											<div class="overlay-content">
 												 <h2>$ ` + prod.price + `</h2>
-													<p>` + prod.name + `</p>
+													<p>` + prod.name + `</p></a>
 												<button class="btn btn-default add-to-cart" data-prod-id="` + prod.id + `" id="button">
 													<i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div></a>
+											</div>
 										</div>
 								</div>
 								<div class="choose">
@@ -604,6 +572,9 @@
     	function getProductList(){
     		//
     	}
+
+
+
 
 </script>
 

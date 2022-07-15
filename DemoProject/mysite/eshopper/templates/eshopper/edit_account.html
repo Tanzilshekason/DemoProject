@@ -15,21 +15,24 @@
                             <Label>First Name</Label>
                             <input name="first_name" value="{{ request.user.first_name }}" type="text">
                         </div>
-
+                        <br>
                         <div>
                         <Label>Last Name</Label>
                         <input name="last_name" value="{{ request.user.last_name }}" type="text">
                         </div>
+                        <br>
 
                         <div>
                         <Label>UserName</Label>
                         <input name="username" value="{{ request.user.username }}" type="text">
                         </div>
+                        <br>
 
                         <div>
                         <Label>Email</Label>
                         <input name="email" value="{{ request.user.email }}" type="email">
                         </div>
+                        <br>
 
                         <div>
                         <button type="submit" class="btn btn-default">Submit</button>
@@ -38,9 +41,7 @@
                     </form>
                 </div>
             </div>
-                <div class="col-sm-1">
-					<h2 class="or">OR</h2>
-				</div>
+
         </div>
     </div>
 </section>

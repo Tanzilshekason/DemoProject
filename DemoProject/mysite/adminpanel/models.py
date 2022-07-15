@@ -478,20 +478,48 @@ class UserRegister(models.Model):
 
 
 class Order(models.Model):
-    image = models.ImageField(upload_to='media/order/image')
-    product = models.CharField(max_length=1000,default='')
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    price = models.CharField(max_length=10000)
-    quantity = models.CharField(max_length=5)
-    total = models.CharField(max_length=1000,default='')
+    firstname = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
     address = models.TextField()
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    postcode = models.IntegerField()
     phone = models.CharField(max_length=10)
-    pincode = models.CharField(max_length=10)
-    date = models.DateField(default=datetime.datetime.today)
+    email = models.EmailField()
+    amount = models.CharField(max_length=1000)
+    payment_id = models.CharField(max_length=300,null=True,blank=True)
+    paid = models.BooleanField(default=False,null=True)
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.product
+        return self.user.username
 
     class Meta:
         verbose_name = 'Order'
         verbose_name_plural = 'Order'
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    product = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='media/photos')
+    quantity = models.CharField(max_length=20)
+    price = models.CharField(max_length=50)
+    total = models.CharField(max_length=1000)
+
+    @property
+    def short_description(self):
+        return truncatechars(self.short_description, 20)
+
+    def admin_photo(self):
+        return mark_safe('<img src="{}" width="100" />'.format(self.image.url))
+
+    admin_photo.short_description = 'Image'
+    admin_photo.allow_tags = True
+
+    def __str__(self):
+        return self.order.user.username
+
+
+

@@ -2,15 +2,27 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login,logout
-from adminpanel.models import Categorys, Products, Brands, Contactus,FilterPrices,Images,Subcategory,Order
+from adminpanel.models import Categorys, Products, Brands, Contactus,FilterPrices,Images,Subcategory,Configuration,Order
+from adminpanel.models import OrderItem
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
+from requests import session
 from wishlist import Wishlist
 from django.http import JsonResponse
-from django.views.generic import View
+from django.views.decorators.csrf import csrf_exempt
+from django.views import View
+import json
+import datetime
+from adminpanel.models import *
 # from django.contrib import messages
+import razorpay
+from django.conf import settings
+
+client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID,settings.RAZORPAY_KEY_SECRET))
+
 
 User = get_user_model()
+session_key = 'cart'
 
 # Create your views here.
 def index(request):
@@ -84,51 +96,96 @@ def blog_single(request):
 
 
 def checkout(request):
-    if request.method == "POST":
-        address = request.POST.get('address')
-        phone = request.POST.get('phone')
-        pincode = request.POST.get('pincode')
-        cart = request.session.get('cart')
-        uid = request.session.get('_auth_user_id')
-        user = User.objects.get(pk=uid)
-        print(cart)
+    payment = client.order.create({
+        "amount":500,
+        "currency":"INR",
+        "payment_capture":"1"
+        })
 
-        print(address,phone,pincode,cart,user)
+    order_id = payment['id']
+    context = {
+        'order_id':order_id,
+        'payment':payment,
+    }
+
+    return render(request,'checkout.html',context)
+
+
+def place_order(request):
+    if request.method == "POST":
+        uid = request.session.get('_auth_user_id')
+        user = User.objects.get(id=uid)
+        cart = request.session.get('cart')
+        print(cart)
+        firstname = request.POST.get('firstname')
+        lastname = request.POST.get('lastname')
+        country = request.POST.get('country')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        postcode = request.POST.get('postcode')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        amount = request.POST.get('amount')
+
+        order_id = request.POST.get('order_id')
+        payment = request.POST.get('payment')
+
+        context = {
+            'order_id':order_id,
+        }
+
+        order = Order(
+            user=user,
+            firstname=firstname,
+            lastname=lastname,
+            country=country,
+            city=city,
+            address=address,
+            state=state,
+            postcode=postcode,
+            phone=phone,
+            email=email,
+            payment_id=order_id,
+            amount=amount
+        )
+        order.save()
+
+
         for i in cart:
             a = (int(cart[i]['price']))
             b = cart[i]['quantity']
             total = a * b
 
-            order = Order(
-                user=user,
+            item = OrderItem(
+                order=order,
                 product=cart[i]['name'],
-                price=cart[i]['price'],
-                quantity=cart[i]['quantity'],
                 image=cart[i]['image'],
-                address=address,
-                phone=phone,
-                pincode=pincode,
-                total=total,
+                quantity=cart[i]['quantity'],
+                price=cart[i]['price'],
+                total=total
             )
-            order.save()
+            item.save()
+
+    return render(request,'placeorder.html',context)
+
+@csrf_exempt
+def success(request):
+    if request.method == "POST":
+        a = request.POST
+        order_id = ""
+        for key, val in a.items():
+            if key == 'razorpay_order_id':
+                order_id = val
+                break
+
+        user = Order.objects.filter(payment_id=order_id).first()
+        user.paid = True
+        user.save()
         request.session['cart'] = {}
-        return redirect('eshopper')
 
-    return HttpResponse("this is checkout page")
+    return render(request,"thank.html")
 
-def check(request):
-    return render(request,'checkout.html')
-
-def your_order(request):
-    uid = request.session.get('_auth_user_id')
-    user = User.objects.get(pk=uid)
-
-    order = Order.objects.filter(user=user)
-    context = {
-        'order':order,
-    }
-
-    return render(request,'order.html',context)
 
 
 def product_details(request,id):
@@ -218,8 +275,6 @@ def edit_account(request):
 
     return render(request,'eshopper/edit_account.html')
 
-
-
 # add to cart code
 
 @login_required(login_url="/login/")
@@ -263,7 +318,8 @@ def cart_clear(request):
 
 @login_required(login_url="/login/")
 def cart_detail(request):
-    return render(request, 'eshopper/cart_detail.html')
+    return render(request, "eshopper/cart_detail.html")
+
 
 
 class ProductListView(View):
@@ -292,23 +348,141 @@ class ProductListView(View):
         }
         return JsonResponse(context,safe=False)
 
-class CartView(View):
-    def get(self,request):
-        product = request.GET.get('product')
 
-        product_queryset = Products.objects.all()
 
-        if product:
-            product = Products.objects.filter(name=product).first()
-            product_queryset = product_queryset.filter(product=product)
 
-        cart_list = list(product_queryset.values())
-        print(cart_list)
-        context = {
-            'products': cart_list
-        }
 
-        return JsonResponse(context,safe=False)
 
+
+
+
+def create_session(request):
+    try:
+        dic = request.session[session_key]
+    except:
+        dic = {}
+    return dic
+
+def update(dic, id):
+    for index, object in dic.items():
+        for key, value in object.items():
+            if index == id:
+                if key == 'quantity':
+                    object[key] = object[key] + 1
+        dic[index] = object
+    return dic
+
+def addtocart(request, id):
+    dic = create_session(request)
+    request.session[session_key] = dic
+
+    product = Products.objects.get(id=id)
+    name = product.name
+    price = product.price
+    image = product.image.url
+    if product.special_price and product.special_price_to > datetime.datetime.now().date() > product.special_price_from:
+        price = product.special_price
+
+    if id not in dic.keys():
+        quantity = 1
+        dic[id] = {'id':id,'quantity':quantity,'price':price,'name':name,'image':image}
+        request.session[session_key] = dic
+    else:
+        if dic[id]['quantity'] < product.quantity:
+            myDic = update(dic,id)
+            request.session[session_key] = myDic
+        else:
+            obj_json = json.dumps({'status': 'Out of Range'})
+            return HttpResponse(obj_json, content_type='application/json')
+
+    obj_json = json.dumps({'status': 'Done','cart_count': len(request.session[session_key])})
+    return HttpResponse(obj_json, content_type='application/json')
+
+
+class Cartview(View):
+    template_name = 'templates/eshopper/cart_detail.html'
+
+    def get(self, request):
+        """
+
+        :param request:
+        :return:
+        """
+        count = 0
+        product_dic = {}
+        try:
+            dic = request.session[session_key]
+            for id in dic:
+                prod = Products.objects.get(id=id)
+                image = prod.image.all()
+                product_dic[id] = {'product': prod, 'image': image[0]}
+
+            object = Configuration.objects.get(conf_key='Tax')
+            return render(request, self.template_name,
+                          {'dic': dic, 'dic2': product_dic, 'configuration': object})
+        except:
+            dic = {}
+            return render(request, self.template_name, {'dic': dic})
+
+
+def delete_cart_item(request, mykey):
+    """
+
+    :param mykey:
+    :param request:
+    :return:
+    """
+    dic = request.session[session_key]
+    del (dic[mykey])
+    request.session[session_key] = dic
+    if dic == {}:
+        obj_json = json.dumps({'status': 'none'})
+        return HttpResponse(obj_json, content_type='application/json')
+    obj_json = json.dumps({'status': 'Done'})
+    return HttpResponse(obj_json, content_type='application/json')
+
+
+def update_quantity(request, mykey):
+    """
+
+    :param mykey:
+    :param request:
+    :return:
+    """
+    dic = request.session[session_key]
+    obj = Products.objects.get(id=int(mykey))
+    if obj.quantity > dic[mykey]['quantity']:
+        dic_updated = update(dic, mykey)
+        request.session[session_key] = dic_updated
+        obj_json = json.dumps(dic_updated[mykey])
+        return HttpResponse(obj_json, content_type='application/json')
+    else:
+        return HttpResponse('Out of Range')
+
+
+def downgrade_quantity(request, mykey):
+    """
+
+    :param request:
+    :param mykey:
+    :return:
+    """
+    dic = request.session[session_key]
+
+    for index, object in dic.items():
+        for key, value in object.items():
+            if index == mykey:
+                if key == 'quantity':
+                    object[key] = object[key] - 1
+        dic[index] = object
+    request.session[session_key] = dic
+    obj_json = json.dumps(dic[mykey])
+    return HttpResponse(obj_json, content_type='application/json')
+
+
+def cart_count(request):
+    cart_dic = session(request)
+    obj_json = json.dumps({'status': len(cart_dic)})
+    return HttpResponse(obj_json, content_type='application/json')
 
 

@@ -15,8 +15,9 @@ urlpatterns = [
     path('blog/',views.blog,name='blog'),
     path('blog_single/',views.blog_single,name='blog_single'),
     path('checkout/',views.checkout,name='checkout'),
-    path('check/', views.check, name='check'),
-    path('order/',views.your_order,name='order'),
+    path('checkout/placeorder/',views.place_order,name='place_order'),
+    path('success',views.success,name='success'),
+
     path('product_detail/<int:id>/',views.product_details,name='product_details'),
     path('wishlist/',views.wishlist,name='wishlist'),
     path('wishlist/add/<int:id>/', views.wishlist_add, name='wishlist_add'),
@@ -35,13 +36,21 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(),name='password_reset_complete'),
 
     # add to  cart urls
-    path('cart/cart_add/<int:id>/', views.cart_add, name='cart_add'),
+    # path('cart/add/<int:id>/', views.cart_add, name='cart_add'),
     path('cart/item_clear/<int:id>/', views.item_clear, name='item_clear'),
     path('cart/item_increment/<int:id>/',views.item_increment, name='item_increment'),
     path('cart/item_decrement/<int:id>/',views.item_decrement, name='item_decrement'),
     path('cart/cart_clear/', views.cart_clear, name='cart_clear'),
     path('cart/cart-detail/',views.cart_detail,name='cart_detail'),
 
-    path('product_list/',ProductListView.as_view(),name='product_list'),
+    # add to cart updated urls
+    path('update/',views.update,name='update'),
+    path('cart/cart_add/<int:id>/', views.addtocart, name='cart_add'),
+    path('cart/delete_cart_item/', views.delete_cart_item, name='delete_cart_item'),
+    path('cart/update_quantity/',views.update_quantity,name='update_quantity'),
+    path('cart/cart_count/', views.cart_count, name='cart_count'),
+
+
+    path('product_list',ProductListView.as_view(),name='product_list'),
 ]
 
