@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login,logout
 from adminpanel.models import Categorys, Products, Brands, Contactus,FilterPrices,Images,Subcategory,Configuration,Order
-from adminpanel.models import OrderItem
+from adminpanel.models import OrderItem, CouponCode
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 from requests import session
@@ -103,9 +103,26 @@ def checkout(request):
         })
 
     order_id = payment['id']
+
+    coupon = None
+    valid_coupon = None
+    invalid_coupon = None
+
+    if request.method == "GET":
+        coupon_code = request.GET.get('coupon_code')
+        if coupon_code:
+            try:
+                coupon = CouponCode.objects.get(code=coupon_code)
+                valid_coupon = "Are Applicable on Current Order !"
+            except:
+                invalid_coupon = "Invalid Coupon Code !"
+
     context = {
-        'order_id':order_id,
-        'payment':payment,
+        'order_id': order_id,
+        'payment': payment,
+        'coupon':coupon,
+        'valid_coupon':valid_coupon,
+        'invalid_coupon':invalid_coupon,
     }
 
     return render(request,'checkout.html',context)
@@ -133,6 +150,7 @@ def place_order(request):
 
         context = {
             'order_id':order_id,
+            'payment':payment,
         }
 
         order = Order(
@@ -147,7 +165,7 @@ def place_order(request):
             phone=phone,
             email=email,
             payment_id=order_id,
-            amount=amount
+            amount=amount,
         )
         order.save()
 
@@ -175,7 +193,7 @@ def success(request):
         a = request.POST
         order_id = ""
         for key, val in a.items():
-            if key == 'razorpay_order_id':
+            if key == 'paypal_order_id':
                 order_id = val
                 break
 

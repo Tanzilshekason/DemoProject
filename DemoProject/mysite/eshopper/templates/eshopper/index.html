@@ -488,6 +488,8 @@
     		console.log(current)
     	});
 
+    	getProductListAjax()
+
 
 		$(document).on('click', '.add-to-cart', function(){
 			const button = document.querySelector(".add-to-cart");
@@ -510,7 +512,8 @@
 
 
 
-    	getProductListAjax()
+
+
 
 <!--		$('.add-to-cart').on('click', function(){-->
 <!--				var product = $(this).text()-->
@@ -522,10 +525,10 @@
 
 
 	function getProductListAjax(category='', brand='', startprice='', endprice=''){
+			console.log(category)
 			console.log(brand)
-			console.log(startprice)
 			$.ajax({
-        		url: "http://127.0.0.1:8000/product_list?category="+category+"&brand="+brand+"&startprice="+startprice+"&endprice="+endprice+"",
+        		url:"http://127.0.0.1:8000/product_list?category="+category+"&brand="+brand+"",
         		type: 'GET',
         		success: function(res) {
             	console.log(res['products']);

@@ -4,7 +4,7 @@ from .models import Configuration, Contactus, Banners, EmailTemplate, Categorys,
 from .models import Products, ProductCategory, ProductImages, OrderDetails, PaymentGateway, Order, OrderItem
 from .models import UserOrder, ProductAttributes, ProductAttributeValue, ProductAttributeAssoc
 from .models import User
-from .models import ManageUser, UserLogin, UserRegister, FilterPrices, Images
+from .models import ManageUser, UserLogin, UserRegister, FilterPrices, Images, CouponCode
 
 admin.site.site_header = 'ADMINPANEL ADMIN'
 admin.site.site_title = 'ADMINPANEL ADMIN PORTAL'
@@ -277,3 +277,4 @@ class OrderAdmin(admin.ModelAdmin):
 
 admin.site.register(Order,OrderAdmin)
 admin.site.register(OrderItem)
+admin.site.register(CouponCode)

@@ -522,4 +522,13 @@ class OrderItem(models.Model):
         return self.order.user.username
 
 
+class CouponCode(models.Model):
+    code = models.CharField(max_length=45)
+    discount = models.IntegerField()
 
+    def __str__(self):
+        return self.code
+
+    class Meta:
+        verbose_name = 'Coupon Code'
+        verbose_name_plural = 'Coupon Code'
