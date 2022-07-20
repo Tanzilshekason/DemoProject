@@ -96,14 +96,6 @@ def blog_single(request):
 
 
 def checkout(request):
-    payment = client.order.create({
-        "amount":500,
-        "currency":"INR",
-        "payment_capture":"1"
-        })
-
-    order_id = payment['id']
-
     coupon = None
     valid_coupon = None
     invalid_coupon = None
@@ -118,11 +110,9 @@ def checkout(request):
                 invalid_coupon = "Invalid Coupon Code !"
 
     context = {
-        'order_id': order_id,
-        'payment': payment,
-        'coupon':coupon,
-        'valid_coupon':valid_coupon,
-        'invalid_coupon':invalid_coupon,
+        'coupon': coupon,
+        'valid_coupon': valid_coupon,
+        'invalid_coupon': invalid_coupon,
     }
 
     return render(request,'checkout.html',context)
@@ -144,6 +134,7 @@ def place_order(request):
         phone = request.POST.get('phone')
         email = request.POST.get('email')
         amount = request.POST.get('amount')
+        coupon = request.POST.get('coupon')
 
         order_id = request.POST.get('order_id')
         payment = request.POST.get('payment')
@@ -166,6 +157,7 @@ def place_order(request):
             email=email,
             payment_id=order_id,
             amount=amount,
+            coupon=coupon,
         )
         order.save()
 
@@ -334,9 +326,28 @@ def cart_clear(request):
     return redirect("cart_detail")
 
 
-@login_required(login_url="/login/")
-def cart_detail(request):
-    return render(request, "eshopper/cart_detail.html")
+# @login_required(login_url="/login/")
+# def cart_detail(request):
+#     coupon = None
+#     valid_coupon = None
+#     invalid_coupon = None
+#
+#     if request.method == "GET":
+#         coupon_code = request.GET.get('coupon_code')
+#         if coupon_code:
+#             try:
+#                 coupon = CouponCode.objects.get(code=coupon_code)
+#                 valid_coupon = "Are Applicable on Current Order !"
+#             except:
+#                 invalid_coupon = "Invalid Coupon Code !"
+#
+#     context = {
+#         'coupon': coupon,
+#         'valid_coupon': valid_coupon,
+#         'invalid_coupon': invalid_coupon,
+#     }
+#
+#     return render(request, "eshopper/cart_detail.html",context)
 
 
 
@@ -365,13 +376,6 @@ class ProductListView(View):
             'products': product_list
         }
         return JsonResponse(context,safe=False)
-
-
-
-
-
-
-
 
 
 def create_session(request):
@@ -502,5 +506,30 @@ def cart_count(request):
     cart_dic = session(request)
     obj_json = json.dumps({'status': len(cart_dic)})
     return HttpResponse(obj_json, content_type='application/json')
+
+@login_required(login_url="/login/")
+def cart_details(request):
+
+    return render(request, "eshopper/cart_detail.html")
+
+class CouponView(View):
+    def get(self,request):
+
+        coupon = request.GET.get('coupon')
+        coupon_queryset = CouponCode.filter(code=coupon)
+
+        if coupon:
+            coupon_code = request.GET.get('coupon_code')
+
+        coupon_list = list(coupon_queryset.values())
+
+
+        context = {
+            'coupon_code':coupon_code,
+            'coupons':coupon_list,
+        }
+
+        return JsonResponse(context, safe=False)
+
 
 

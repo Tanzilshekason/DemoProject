@@ -97,7 +97,7 @@
 								<li><a href="{% url 'wishlist' %}"><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="{% url 'order' %}"><i class="fa fa-star"></i> Your Order</a></li>
 								<li><a href="{% url 'checkout' %}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="{% url 'cart_detail' %}"><i class="fa fa-shopping-cart"></i> Cart
+								<li><a href="{% url 'cart_details' %}"><i class="fa fa-shopping-cart"></i> Cart
 							<span id="cart-increment"><span class="badge badge-secondary cart_count">{{request.session.cart|length}}</span></span></a></li>
 								{% if user.is_authenticated %}
 								<li><a href="{% url 'logout' %}">Logout</a></li>
@@ -508,19 +508,6 @@
             });
 
         });
-
-
-
-
-
-
-
-<!--		$('.add-to-cart').on('click', function(){-->
-<!--				var product = $(this).text()-->
-<!--				getCartAjax(product=product)-->
-<!--    		});-->
-<!--    	getCartAjax()-->
-
 	});
 
 
@@ -571,7 +558,7 @@
 				});
         		}
     	});
-    	}
+    }
     	function getProductList(){
     		//
     	}

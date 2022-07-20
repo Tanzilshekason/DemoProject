@@ -113,7 +113,9 @@
 						<ul>
 							<li>Cart Sub Total <span>${{cart_total_amount}}</span></li>
 							<li>Shipping Cost <span>Free</span></li>
-							<li>Total <span>${{cart_total_amount}}</span></li>
+							<li>Cart Sub Total <span>${{cart_total_amount}}</span></li>
+							<li>Coupon<span style="margin-left:200px;">NA</span></li>
+							<li >Total <span id="total">${{cart_total_amount}}</span></li>
 						</ul>
 							<a class="btn btn-default check_out" href="{% url 'checkout' %}">Check Out</a>
 					</div>
@@ -121,10 +123,127 @@
 
 
 
+		<div>
+            <p>COUPON CODE:</p>
+                <form method="get">
+                    <div class="coupon-all">
+                        <div class="coupon">
+<!--						{% if valid_coupon %}-->
+<!--                    	<div class="alert alert-success alert-dismissible fade show" role="alert">-->
+<!--                        	<strong>{{coupon.code}}</strong>&nbsp;{{valid_coupon}}-->
+<!--                        	<button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+<!--                            	<span aria-hidden="true">&times;</span>-->
+<!--                        	</button>-->
+<!--						</div>-->
+<!--                     	{% elif invalid_coupon %}-->
+<!--                    	<div class="alert alert-danger alert-dismissible fade show" role="alert">-->
+<!--                        	{{invalid_coupon}}-->
+<!--                        	<button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+<!--                            	<span aria-hidden="true">&times;</span>-->
+<!--                        	</button>-->
+<!--                        </div>-->
+<!--                    	{% endif %}-->
+                        	<input id="coupon_code" type="text" name="coupon_code" class="input-text" placeholder="Coupon Code">
+                        	<button class="tp-btn-h1 coupon_code" type="submit">APPLY COUPON</button>
+                    	</div>
+					</div>
+				</form>
+		</div>
+
 	</div>
 
-</section><!--/#do_action-->
 
+
+</section><!--/#do_action-->
+<script>
+<!--	$(document).ready(function(){-->
+<!--    	$(document).on('click', '.coupon_code', function(){-->
+<!--			var coupon = $(this)-->
+<!--			console.log(coupon)-->
+<!--    	});});-->
+
+
+<!--    	function coupon(){-->
+<!--    		$.ajax({-->
+<!--                type: 'GET',-->
+<!--                url: "http://127.0.0.1:8000/cart/cart-detail/",-->
+<!--                success: function(data){-->
+<!--	            console.log(success);-->
+<!--				html_text = `<h3>What would you like to do next?</h3>`-->
+<!--				$.each(success, function() {-->
+<!--					coupon_html = `<p>Choose if you have a discount code or reward points you want to use or-->
+<!--									 would like to estimate your delivery cost.</p>-->
+<!--									</div>-->
+<!--									<div class="col-sm-6">-->
+<!--										<div class="total_area">-->
+<!--											<ul>-->
+<!--												<li>Cart Sub Total <span>$ ` + cart_total_amount + `</span></li>-->
+<!--												<li>Shipping Cost <span>Free</span></li>-->
+<!--												` + if valid_coupon + `-->
+<!--												<li>Cart Sub Total <span>$ ` + cart_total_amount + `</span></li>-->
+<!--												<li> ` + coupon.code + `-->
+<!--												<span style="margin-left:200px;">- ` + coupon.discount + `$</span></li>-->
+<!--												` + endif + `-->
+<!--												<li >Total <span id="total">$` + cart_total_amount + `</span></li>-->
+<!--											</ul>-->
+<!--												<a class="btn btn-default check_out" href="/checkout/">Check Out</a>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								<div>-->
+<!--            						<p>COUPON CODE:</p>-->
+<!--                						<form method="get">-->
+<!--                    						<div class="coupon-all">-->
+<!--                        					<div class="coupon">-->
+
+<!--                        					<input id="coupon_code" type="text" name="coupon_code" class="input-text"-->
+<!--                        					placeholder="Coupon Code">-->
+<!--                        					<button class="tp-btn-h1 coupon_code" type="submit">APPLY COUPON</button>-->
+<!--                    						</div>-->
+<!--											</div>-->
+<!--										</form>-->
+<!--								</div>`-->
+<!--								html_text = html_text + coupon_html-->
+
+<!--								$('.heading').empty()-->
+<!--								$('.heading').append(html_text)-->
+<!--					});-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+<!--        function coupon(){-->
+<!--    		//-->
+<!--    	}-->
+
+<!--</script>-->
+
+
+<script>
+	var settings = {
+  	"url": "http://127.0.0.1:8000/cart/cart-details/?coupon_code=coupon",
+  	"method": "GET",
+  	"timeout": 0,
+	};
+
+	$.ajax(settings).done(function (response) {
+  	console.log(response);
+	});
+</script>
+
+<script>
+    var item_amounts = {{cart_total_amount}};
+    var coupon_discount = {{coupon.discount}}
+    console.log(coupon_discount)
+    if(coupon_discount){
+        if(item_amounts < 500){
+            cal_discount = item_amounts - (coupon_discount)
+            document.getElementById("total").innerHTML = "$" + " " + cal_discount.toFixed()
+        }
+        else{
+            cal_discount = item_amounts - (coupon_discount)
+            document.getElementById("total").innerHTML = "$" + " " + cal_discount.toFixed()
+        }
+    }
+</script>
 
 
 

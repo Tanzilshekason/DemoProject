@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Userinfo, UserWishList, UserAddress, Coupon, CouponsUsed, Cms
+from .models import Userinfo, UserWishList, UserAddress,CouponsUsed, Cms
 from .models import Configuration, Contactus, Banners, EmailTemplate, Categorys, Subcategory, Brands
 from .models import Products, ProductCategory, ProductImages, OrderDetails, PaymentGateway, Order, OrderItem
 from .models import UserOrder, ProductAttributes, ProductAttributeValue, ProductAttributeAssoc
@@ -40,15 +40,6 @@ class UserAddressAdminSite(admin.ModelAdmin):
 
 
 admin.site.register(UserAddress, UserAddressAdminSite)
-
-
-class CouponAdminSite(admin.ModelAdmin):
-    model = Coupon
-    fields = ['code', 'percent_off', 'created_by', 'created_date', 'modify_by', 'modify_date', 'no_of_uses']
-    list_display = ('code', 'percent_off', 'created_by', 'created_date', 'modify_by', 'modify_date', 'no_of_uses')
-
-
-admin.site.register(Coupon, CouponAdminSite)
 
 
 class CouponsUsedAdminSite(admin.ModelAdmin):

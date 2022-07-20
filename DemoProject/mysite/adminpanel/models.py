@@ -53,29 +53,11 @@ class UserAddress(models.Model):
         verbose_name = 'user Address'
         verbose_name_plural = 'user Address'
 
-
-class Coupon(models.Model):
-    code = models.CharField(max_length=45)
-    percent_off = models.FloatField()
-    created_by = models.IntegerField()
-    created_date = models.DateField()
-    modify_by = models.IntegerField()
-    modify_date = models.DateField()
-    no_of_uses = models.IntegerField()
-
-    def __str__(self):
-        return self.code
-
-    class Meta:
-        verbose_name = 'coupon'
-        verbose_name_plural = 'coupon'
-
-
 class CouponsUsed(models.Model):
     user_id = models.IntegerField()
     order_id = models.IntegerField()
     created_date = models.DateField()
-    coupon_id = models.ForeignKey(Coupon, on_delete=models.CASCADE)
+    coupon_id = models.IntegerField()
 
     class Meta:
         verbose_name = 'coupon Used'
@@ -367,7 +349,7 @@ class UserOrder(models.Model):
     status = models.IntegerField()
     grand_total = models.FloatField()
     shipping_charges = models.FloatField()
-    coupon_id = models.ForeignKey(Coupon, on_delete=models.CASCADE)
+    coupon_id = models.IntegerField()
     billing_address1 = models.CharField(max_length=100)
     billing_address2 = models.CharField(max_length=100)
     billing_city = models.CharField(max_length=45)
@@ -477,6 +459,18 @@ class UserRegister(models.Model):
         verbose_name_plural = 'User Register'
 
 
+class CouponCode(models.Model):
+    code = models.CharField(max_length=45)
+    discount = models.IntegerField()
+
+    def __str__(self):
+        return self.code
+
+    class Meta:
+        verbose_name = 'Coupon Code'
+        verbose_name_plural = 'Coupon Code'
+
+
 class Order(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     firstname = models.CharField(max_length=100)
@@ -491,6 +485,7 @@ class Order(models.Model):
     amount = models.CharField(max_length=1000)
     payment_id = models.CharField(max_length=300,null=True,blank=True)
     paid = models.BooleanField(default=False,null=True)
+    coupon = models.CharField(max_length=45)
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -522,13 +517,4 @@ class OrderItem(models.Model):
         return self.order.user.username
 
 
-class CouponCode(models.Model):
-    code = models.CharField(max_length=45)
-    discount = models.IntegerField()
 
-    def __str__(self):
-        return self.code
-
-    class Meta:
-        verbose_name = 'Coupon Code'
-        verbose_name_plural = 'Coupon Code'

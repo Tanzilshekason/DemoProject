@@ -67,8 +67,7 @@
                     <div class="cart-shipping-update-wrapper">
                         <div class="cart-shipping-update">
 
-							<div id="paypal-button-container"></div>
-
+							<div  id="paypal-button-container" style="width:300px;margin-left:800px;"></div>
 
 							<!-- Include the PayPal JavaScript SDK -->
     							<script src="https://www.paypal.com/sdk/js?client-id=Acw2j9kIw-YXx_bF670cCW7jVq9hGORWnKfCt9Pqu6BklelBfUQik2tG0MBwt9fPVj_8paneryid2h07&currency=USD"></script>
@@ -79,6 +78,9 @@
         									layout: 'vertical',
         									color: 'gold',
         									shape: 'pill',
+        									size: 'responsive',
+        									height: 38,
+        									tagline:'false',
         								},
 
             								createOrder: function(data, actions) {
@@ -87,6 +89,7 @@
                         								amount: {
                             								value: '{{cart_total_amount}}'
                         								}
+
                     								}]
                 								});
             								},
@@ -101,6 +104,9 @@
                 								});
             								}
         								}).render('#paypal-button-container');
+
+
+
     								</script>
 
                         </div>
@@ -111,52 +117,5 @@
 
 	</section> <!--/#cart_items-->
 
-
-
-
-
-
-
-
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script>
-var options = {
-  "key": "rzp_test_0Z2ymCPtbHYIHU",
-  "amount": "50000",
-  "currency": "INR",
-  "name": "Acme Corp",
-  "description": "Test Transaction",
-  "image": "https://example.com/your_logo",
-  "order_id": "{{order_id}}",
-  "callback_url":"http://127.0.0.1:8000/success",
-
-  "prefill": {
-      "name": "Gaurav Kumar",
-      "email": "gaurav.kumar@example.com",
-      "contact": "9999999999"
-  },
-  "notes": {
-      "address": "Razorpay Corporate Office"
-  },
-  "theme": {
-      "color": "#3399cc"
-  }
-};
-var rzp1 = new Razorpay(options);
-rzp1.on('payment.failed', function (response){
-      alert(response.error.code);
-      alert(response.error.description);
-      alert(response.error.source);
-      alert(response.error.step);
-      alert(response.error.reason);
-      alert(response.error.metadata.order_id);
-      alert(response.error.metadata.payment_id);
-});
-document.getElementById('rzp-button1').onclick = function(e){
-  rzp1.open();
-  e.preventDefault();
-}
-</script>
-</form>
 {% endblock %}
 

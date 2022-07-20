@@ -89,7 +89,7 @@
 								<li><a href="{% url 'account' %}"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="{% url 'checkout' %}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="{% url 'cart_detail' %}"><i class="fa fa-shopping-cart"></i> Cart
+								<li><a href="{% url 'cart_details' %}"><i class="fa fa-shopping-cart"></i> Cart
 								<span class="badge badge-secondary">{{request.session.cart|length}}</span></a></li>
 								{% if user.is_authenticated %}
 								<li><a href="{% url 'logout' %}">Logout</a></li>
